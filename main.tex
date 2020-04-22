@@ -413,56 +413,177 @@ Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg.
 
 \subsubsection{Comparaison}
 
+Plusieurs tests ont été effectués afin de pouvoir effectuer une comparaison de ces systèmes. Comme ces différents tests obligent une prise en main concrète des logiciels, ceux-ci ont également permis d'avoir une idée de la facilité d'utilisation, de la flexibilité ainsi que de l'utilisabilité ( \og user-friendliness \fg) des systèmes.
+
+Voici les versions des logicielles utilisées pour effectuer ces tests :
+
+\begin{itemize}
+    \item Elastic Stack
+    \subitem Elasticsearch 7.6.2
+    \subitem Filebeat 7.6.2
+    \subitem Logstash 7.6.2
+    \subitem Kibana 7.6.2
+    \item Graylog
+    \subitem Graylog 3.2.4-1 (Virtual Appliance)
+    \subitem Filebeat 7.6.2
+    \item Splunk
+    \subitem Splunk 8.0.2.1
+    \subitem Splunk Universal Forwarder 8.0.2.1
+    \item Loggly
+    \subitem Loggly Lite (Cloud)
+\end{itemize}
+
+\textbf{Test de débit d'ingestion de log}
+
+Le premier test de cette comparaison consiste en un test de débit. Cela permet d'avoir une première idée de la performance des applications.
+
 Conditions de tests :
-Chargement d'un fichier de 98'305 lignes de texte contenant : 2020-02-27 09:06:24.596 INFO  o.s.s.c.ThreadPoolTaskScheduler -> Shutting down ExecutorService 'taskScheduler'
+\begin{itemize}
+    \item Chargement d'un fichier de logs.
+    \subitem Le fichier contient 98'305 logs identiques.
+    \subitem Log : 2020-02-27 09:06:24.596 INFO  o.s.s.c.ThreadPoolTaskScheduler -> Shutting down ExecutorService 'taskScheduler'
+    \item On effectue un test d'ingestion simple (on stocke le log brut).
+    \item On effectue un test d'ingestion avec filtre (on parse les différentes parties du log).
+    \subitem Date et heure : 2020-02-27 09:06:24.596
+    \subitem Niveau du log : INFO
+    \subitem Classe Java : o.s.s.c.ThreadPoolTaskScheduler
+    \subitem Message : Shutting down ExecutorService 'taskScheduler'
+    \item Le résultat est un débit exprimé en EPS (Event Per Second), qui correspond aux nombres de logs que le système aura pu ingéré en une seconde.
+\end{itemize}
+
+Résultats :
+
+\centering
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
+    \hline
+    & Elastic Stack & Graylog & Splunk & Loggly \\
+    \hline
+    Sans filtrage & 4'898 & 14'044 & - & 46'295 (\textasteriskcentered) \\
+    \hline
+    Avec filtrage & 9'181 & 7'868 & 2'628 & -\\
+    \hline
+\end{tabular}
+\justify
+
+(*) Loggly n'acceptant que des fichiers de taille inférieure à 5 MB, le fichier à été réduit à 3'999 logs.
+
+Splunk favorise l'extraction d'informations (parsing) après avoir stocké les logs dans le système. Il est donc compliqué d'ajouter un filtrage avant le stockage et ça n'a donc pas été réalisé. Par contre, Splunk effectue automatiquement une extraction de la date des logs. Son débit à donc été classé dans la catégorie \og avec filtrage \fg.
+Loggly ayant été écarté assez tôt de l'évaluation, la partie \og avec filtrage \fg n'a pas été testée. \\
+
+Conclusion : Sans filtrage, on constate que Graylog possède un débit supérieur à Elastic Stack. Loggly n'acceptant pas des fichiers de grande taille, il est difficilement comparable. Avec filtrage, étonnemment, la Suite Elastic gagne en débit. Elle possède donc un meilleur débit que Graylog et Splunk.
+Après ce test, outre les résultats comptables, il se dessine surtout une tendance vers Graylog et Elastic Stack, car ces deux systèmes sont plus \og ouvert \fg que les autres. Il n'y a pas eu de difficultés particulières lors de l'utilisation, pas de contraintes comme la taille du fichier ou encore le moment du filtrage au sein du pipeline.
+
+\textbf{Test d'ingestion d'une grande quantité de logs}
+
+Ce test a pour but de mettre en évidence les limites de certains systèmes lors de l'ingestion de gros fichier de logs. Il permet également d'avoir une brève vue sur la constance du débit mesuré lors du test précédent.
+
+Conditions de tests :
+\begin{itemize}
+    \item Chargement d'un fichier de logs.
+    \subitem Le fichier contient 999'999 logs identiques.
+    \subitem Log : 2020-02-27 09:06:24.596 INFO o.s.s.c.ThreadPoolTaskScheduler -> Shutting down ExecutorService ’taskScheduler’
+    \item On n'effectue aucun traitement sur le log.
+    \item Le résultat est soit une limite supérieure, soit \og > 1'000'000 \fg
+\end{itemize}
+
+Résultats : 
+
+\centering
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
+    \hline
+    Elastic Stack & Graylog & Splunk & Loggly \\
+    \hline
+    > 1'000'000 & > 1'000'000 & > 1'000'000 & \textasciitilde 4'000 (5 MB) \\
+    \hline
+\end{tabular}
+\justify
+
+Conclusion :
+Ce test permet simplement de montrer que les systèmes travaillant avec un agent, soit selon la méthode PUSH, n'ont pas de problème de taille de fichier, car l'agent lit et envoie les logs au fur et à mesure. Loggly est le seul ici utilisant la méthode PULL. Au niveau des débits, ceux d'Elastic Stack et Graylog ont été divisé par 2, alors que celui de Splunk est resté stable. Pour Loggly, il n'y a pas eu de différence, étant donné qu'il est limité en taille de fichier.
+
+
+\textbf{Test de consommation CPU}
+
+Ce test-ci a pour but de pouvoir comparer les systèmes de gestion de logs Elastic Stack et Graylog en terme de performance.
+
+Conditions de test :
+\begin{itemize}
+    \item Chargement du même fichier de log que pour le test de débit.
+    \item L'utilisation du CPU sera réduite au minimum hors système à tester.
+    \item Ordinateur de test : ASUS UX360UAK
+    \item Processeur : Intel Core i7-7500U CPU @ 2.70GHz x 4
+    \item Lors de la réception, l'agent Filebeat se situera sur une autre machine.
+\end{itemize}
+
+Résultats :
+
+Elastic Stack (Logstash - Elasticsearch - Kibana), réception des logs :\\
+\includegraphics[width=19cm]{img/screenshots/Elastic_CPU_MEM_Receive_modified.png}
+Graylog, réception des logs :\\
+\includegraphics[width=19cm]{img/screenshots/Graylog_CPU_MEM_Receive_modified.png}
+Filebeat, envoi des logs :\\
+\includegraphics[width=19cm]{img/screenshots/Filebeat_send_modified.png}
+
+
+
+\appendix
+
+\section{Images}
+
+\section{Détails des tests}
+
+\subsection{Tests de débit d'ingestion}
 
 Graylog (3.2.4 Virtual appliance) avec Filebeat :
 
-Sans extractor :
+Sans extractor (module de Graylog permettant le parsing des logs) :
 
-Début du chargement : 10:09:17
-Fin du chargement : 10:09:24
-Temps de chargement : 7 secondes
-Débit moyen : \textasciitilde 14'044 EPS
+Début du chargement : 10:09:17 \\
+Fin du chargement : 10:09:24 \\
+Temps de chargement : 7 secondes \\
+Débit moyen : \textasciitilde 14'043,47 EPS \\
 
 Avec extractor :
 
-Début du chargement : 14:02:09
-Fin du chargement : 14:02:18
-Temps de chargement : 9 secondes
-Nombre de logs : 35'953
-Débit moyen : \textasciitilde 3'995 EPS
+Début du chargement : 07:46:47.153 \\
+Fin du chargement : 07:46:59.648 \\
+Temps de chargement : 12.495 secondes \\
+Débit moyen : \textasciitilde 7'867,55 EPS \\
 
-Elastic Stack avec Filebeat (sans Logstash) :
+Elastic Stack sans Logstash :
 
-Début du chargement : 11:48:42
-Fin du chargement : 11:49:22
-Temps de chargement : 40 secondes
-Débit moyen : \textasciitilde 2'458 EPS
+Début du chargement : 10:34:34.200 \\
+Fin du chargement : 10:35:03.622 \\
+Temps de chargement : 29.422 secondes \\
+Débit moyen : \textasciitilde 3'341,21 EPS \\
+
+Elastic Stack complet (sans filtrage du log) :
+
+Début du chargement : 10:44:11.851 \\
+Fin du chargement : 10:44:31.920 \\
+Temps de chargement : 20.069 secondes \\
+Débit moyen : \textasciitilde 4'898,35 EPS \\
 
 Elastic Stack complet (avec filtrage du log) :
 
-Début du chargement : 11:45:34
-Fin du chargement : 11:46:07
-Temps de chargement : 33 secondes
-Nombre de logs : 90'228
-Débit moyen : \textasciitilde 2'734 EPS
+Début du chargement : 10:26:37.308 \\
+Fin du chargement : 10:26:48.015 \\
+Temps de chargement : 10.707 secondes \\
+Débit moyen : \textasciitilde 9'181,38 EPS \\
 
 Splunk :
 
-Avec filtrage :
-Donné (metrics.log de Splunk) : 2'628 EPS
+Avec filtrage : \\
+Donné (metrics.log de Splunk) : 2'628 EPS \\
 
 Solarwinds Loggly avec endpoint bulk :
 Avec Loggly, il est impossible de charger un fichier de plus de 5 MB. Il a donc été réduit à 39'999 lignes.
 
-Début du chargement : 08:42:11.360
-Fin du chargement : 18:42:12.224
-Temps de chargement : 0.864 seconde
-Débit moyen : \textasciitilde 46'295 EPS
+Début du chargement : 08:42:11.360 \\
+Fin du chargement : 18:42:12.224 \\
+Temps de chargement : 0.864 seconde \\
+Débit moyen : \textasciitilde 46'295,14 EPS \\
 
-
-\appendix
 \section{Journal de travail}
 
 
