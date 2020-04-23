@@ -413,7 +413,7 @@ Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg.
 
 \subsubsection{Comparaison}
 
-Plusieurs tests ont été effectués afin de pouvoir effectuer une comparaison de ces systèmes. Comme ces différents tests obligent une prise en main concrète des logiciels, ceux-ci ont également permis d'avoir une idée de la facilité d'utilisation, de la flexibilité ainsi que de l'utilisabilité ( \og user-friendliness \fg) des systèmes.
+Plusieurs tests ont été effectués afin de pouvoir effectuer une comparaison de ces systèmes. Comme la plupart de ces tests obligent une prise en main concrète des logiciels, ceux-ci ont également permis d'avoir une idée de la facilité d'utilisation, de la flexibilité ainsi que de l'utilisabilité ( \og user-friendliness \fg) des systèmes.
 
 Voici les versions des logicielles utilisées pour effectuer ces tests :
 
@@ -470,7 +470,8 @@ Résultats :
 Splunk favorise l'extraction d'informations (parsing) après avoir stocké les logs dans le système. Il est donc compliqué d'ajouter un filtrage avant le stockage et ça n'a donc pas été réalisé. Par contre, Splunk effectue automatiquement une extraction de la date des logs. Son débit à donc été classé dans la catégorie \og avec filtrage \fg.
 Loggly ayant été écarté assez tôt de l'évaluation, la partie \og avec filtrage \fg n'a pas été testée. \\
 
-Conclusion : Sans filtrage, on constate que Graylog possède un débit supérieur à Elastic Stack. Loggly n'acceptant pas des fichiers de grande taille, il est difficilement comparable. Avec filtrage, étonnemment, la Suite Elastic gagne en débit. Elle possède donc un meilleur débit que Graylog et Splunk.
+Conclusion : \\
+Sans filtrage, on constate que Graylog possède un débit supérieur à Elastic Stack. Loggly n'acceptant pas des fichiers de grande taille, il est difficilement comparable. Avec filtrage, étonnemment, la Suite Elastic gagne en débit. Elle possède donc un meilleur débit que Graylog et Splunk.
 Après ce test, outre les résultats comptables, il se dessine surtout une tendance vers Graylog et Elastic Stack, car ces deux systèmes sont plus \og ouvert \fg que les autres. Il n'y a pas eu de difficultés particulières lors de l'utilisation, pas de contraintes comme la taille du fichier ou encore le moment du filtrage au sein du pipeline.
 
 \textbf{Test d'ingestion d'une grande quantité de logs}
@@ -498,7 +499,7 @@ Résultats :
 \end{tabular}
 \justify
 
-Conclusion :
+Conclusion : \\
 Ce test permet simplement de montrer que les systèmes travaillant avec un agent, soit selon la méthode PUSH, n'ont pas de problème de taille de fichier, car l'agent lit et envoie les logs au fur et à mesure. Loggly est le seul ici utilisant la méthode PULL. Au niveau des débits, ceux d'Elastic Stack et Graylog ont été divisé par 2, alors que celui de Splunk est resté stable. Pour Loggly, il n'y a pas eu de différence, étant donné qu'il est limité en taille de fichier.
 
 
@@ -518,13 +519,49 @@ Conditions de test :
 Résultats :
 
 Elastic Stack (Logstash - Elasticsearch - Kibana), réception des logs :\\
-\includegraphics[width=19cm]{img/screenshots/Elastic_CPU_MEM_Receive_modified.png}
+\includegraphics[width=18cm]{img/screenshots/Elastic_CPU_MEM_Receive_modified.png}\\
 Graylog, réception des logs :\\
-\includegraphics[width=19cm]{img/screenshots/Graylog_CPU_MEM_Receive_modified.png}
+\includegraphics[width=18cm]{img/screenshots/Graylog_CPU_MEM_Receive_modified.png}\\
 Filebeat, envoi des logs :\\
-\includegraphics[width=19cm]{img/screenshots/Filebeat_send_modified.png}
+\includegraphics[width=18cm]{img/screenshots/Filebeat_send_modified.png}\\
 
+Conclusion : \\
+Premièrement, on constate que l'agent Filebeat est un agent très léger puisque son action ne se fait quasiment pas ressentir sur le taux d'utilisation du CPU. Pour ce qui est du taux d'utilisation CPU par la Suite Elastic, on remarque que lors de la réception et le stockage des logs, tous les CPUs tournaient à 100\% de leur capacité, et la charge dure environ 25 secondes. Pour Graylog, les CPUs ne sont pas autant sollicité, ou du moins pas tous en même temps. Ils varient entre 20\% et 100\% et la distribution est plutôt égale entre les CPUs. On peut donc estimer un taux d'utilisation moyen à 60-70\%. La charge dure cette fois-ci environ 45 sec. À noter que Graylog ingère les logs en env. 7 secondes, puis travaille encore pendant env. 35 secondes, alors que la Suite Elastic fait tout en même temps. On peut constater ceci grâce à la courbe de l'historique du trafic réseau.
 
+\textbf{Popularité des systèmes}
+
+La comparaison de popularité des différents systèmes permet de se faire un idée sur les tendances actuelles et passées d'utilisation de ces systèmes. Elle a également pour but de pouvoir éventuellement anticiper les futures tendances. Ces données sont importantes lors du choix d'un logiciel, afin de pouvoir compter sur un support de la communauté lors des problèmes qui arriveront pendant le développement.
+
+Conditions de tests :
+
+\begin{itemize}
+    \item Les courbes de tendances seront tirées de Google Trends.
+    \item Les courbes porteront sur les 10 dernières années.
+    \subitem Du 23 avril 2010 au 23 avril 2020
+    \item Les courbes porteront sur les recherches dans tous les pays du monde.
+    \item Il n'y aura pas d'autre restriction de recherche (catégorie, outil Google)
+\end{itemize}
+
+Résultats :
+
+Courbes de tendance des 4 systèmes :\\
+\includegraphics[width=18cm]{img/screenshots/Tendance_4.png}\\
+Courbes de tendance de Graylog et Splunk :\\
+\includegraphics[width=18cm]{img/screenshots/Tendance_2.png}\\
+
+La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Suite \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
+
+Conclusion : \\
+On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième ne que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
+
+\newpage
+
+\thispagestyle{empty}
+\centering
+\vspace{10cm}
+{\huge ANNEXES}
+
+\newpage
 
 \appendix
 
