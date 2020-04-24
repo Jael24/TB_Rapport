@@ -41,7 +41,7 @@
 % ---
 % Header of all pages
 \lhead{\includegraphics[width=5cm]{img/logo.png}}
-\rhead{}
+\rhead{Jael Dubey}
 
 % Footer of all pages
 \renewcommand{\footrulewidth}{0.4pt}
@@ -101,12 +101,50 @@
 \end{titlepage}
 
 \newpage
+
+% Cahier des charges ================================================
+\section{Cahier des charges}
+\subsection{Résumé du problème}
+DEPsys est une entreprise Suisse leader technologique du marché énergétique. Fondée en 2012 et basée à Puidoux, elle fournit des solutions évolutives basées sur sa plateforme GridEye permettant aux réseaux de distribution d'énergie traditionnels de faire face aux nouvelles contraintes de la production décentralisée des sources d'énergie renouvelable, tels que les systèmes photovoltaïques et les technologies de mobilité électrique.
+
+La plateforme GridEye offre une solution technologique innovatrice pour les gestionnaires de réseau de distribution (GRD, p. ex. Romande Énergie). Positionné de manière unique avec sa simplicité de déploiement, c'est la seule solution réellement Plug \& Play qui évite tous les problèmes d'installation. La surveillance du réseau électrique en temps réel et les statistiques fournissent des informations détaillées sur les conditions du réseau. Les algorithmes de contrôle et de gestion garantissent la qualité et la stabilité du réseau.
+
+Ce Travail de Bachelor consiste en une évaluation de différentes technologies de logging et de l'analyse des performances, pour ensuite mettre en place la meilleure solution pour l'infrastructure GridEye.
+
+\subsection{Étapes de réalisation du projet}
+
+\begin{itemize}
+    \item Évaluation théorique de plusieurs systèmes de gestion de logs.
+    \subitem Choix des systèmes à évaluer.
+    \item Comparaison entre les différents systèmes.
+    \subitem Comparaison théorique \& pratique.
+    \item Choix d'un système.
+    \subitem En accord avec l'entreprise mendante.
+    \item Implémentation d'un cas d'utilisation concret fourni par DEPsys.
+    \item Implémentation d'une démonstration de faisabilité (Proof of Concept, PoC).
+    \item Implémentation de librairies (SDK) pour l'interfaçage avec le Back-End de la solution GridEye (puis Front-End, puis outils externes).
+\end{itemize}
+
+\subsection{Informations diverses et technologies}
+Les logs sont constitués de plusieurs types (System, User Action, Notification, ...) avec différents niveaux de priorités (debug, info, ...). Les logs utilisateurs doivent pouvoir être consultés depuis le Front-End, alors que les logs systèmes peuvent être accessible depuis une dashboard interne. Les notifications, dépendant du niveau de priorité, doivent pouvoir être transmises en temps réel aux gestionnaire de réseau de distribution électrique  par e-mail, notification push, etc. ou sous forme de rapport journalier/hebdomadaire. La mise en place de librairies (SDK) est nécessaire pour communiquer avec les différents composants de l'infrastructure. Le but étant de pouvoir s'interfacer avec l'infrastructure actuelle afin de pouvoir remplacer la solution de logging actuelle.
+
+Technologies:
+
+\begin{itemize}
+    \item Base de données : SQL, JSON, ... (dépendant de la solution choisie).
+    \item Back-End : Java
+    \item Front-End : Javascript 
+    \item Outils externes : Python 3
+\end{itemize}
+\newpage
+
 % Contents page =====================================================
 \renewcommand{\contentsname}{Table des matières}
 \tableofcontents
 
 \newpage
 % Document start ====================================================
+
 \section{Introduction}
 \section{Évaluation}
 
@@ -564,6 +602,7 @@ On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côt
 \newpage
 
 \appendix
+\justify
 
 \section{Images}
 
@@ -682,7 +721,20 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
     J'ai continué les tests d'ingestion. En suivant les guides du site d'elastic, j'ai remarqué qu'il y avait toute une section expliquant l'utilisation de la Suite avec Docker. Je me suis dit qu'il y avait plus de chance que cela fonctionne étant donné l'uniformité que propose Docker. Malheureusement, j'ai toujours les mêmes problèmes. Même en prenant un git public sensé fonctionner. Je me dit alors que le problème vient peut-être de mes fichiers de logs de tests (ils contiennent le même log multiplié n fois).
 \subsection{Jeudi 09 avril}
     Je suis repassé sur une version non dockerisée de la suite Elastic. J'ai téléchargé un fichier de log d'un serveur Apache afin de tester la Suite avec un fichier de log réel, et fait d'autres modifications, notamment sur les fichiers de configuration (j'ai créé la partie \og filtrage \fg de Logstash avec un site internet permettant de créer ces filtres de manière incrémentale). Et ça à fonctionné. J'ai ensuite eu la réunion avec Nastaran.
+\subsection{Lundi 13 avril}
+    J'ai effectué les tests de performances avec filtrage de la Suite Elastic. Après ceci, je me suis lancé dans les tests avec filtrage de Graylog. Cette fois-ci, ce n'est pas avec un logiciel intermédiaire comme Logstash, mais avec une fonctionnalité intégrée à Graylog : les Graylog Extractors.
 \subsection{Mercredi 15 avril}
+    J'ai commencé à cherché une façon d'effectuer le filtrage avec le système de gestion de logs Splunk. Malheureusement, j'ai l'impression que cela va être plus compliqué car Splunk favorise l'extraction des informations après l'indexage. Je vais encore chercher une journée, et si ce n'est pas concluant, je passerai outre.
+\subsection{Jeudi 16 avril}
+    J'ai tenté d'effectuer l'extraction d'informations dans les logs durant la phase de "parsing" du pipeline de Splunk. J'ai vu qu'il devait être possible de le faire en modifiant des fichiers de configuration dans le répertoire de Splunk, mais cela n'a pas fonctionné.
+\subsection{Lundi 20 avril}
+    J'ai rédigé les résultats des tests d'ingestion. J'ai ensuite commencé à étudié les manières de faire des tests de consommation CPU. Sachant qu'avec Amazon Web Service (AWS), comme je l'avais vu quelques semaines plus tôt dans un cours de Cloud Computing, il est possible de monitorer différentes métriques d'une instance, entre autres l'utilisation du CPU, je me suis lancé dans une installation de la Suite Elastic sur une instance t2.micro d'AWS. Malheureusement, ces instances sont trop petites et ne supportent pas simplement Elasticsearch. Ne voulant pas payer pour des instances plus grosses, je me suis rabattu sur la solution locale. Je vais donc simplement stopper le maximum de processus et monitorer l'utilisation de mon CPU avec l'outil natif d'Ubuntu. Je dois aussi installer Filebeat et Graylog sur un autre ordinateur afin de pouvoir effectué ces tests (dans la réalité, le serveur et le client ne seront pas sur la même machine).
+\subsection{Mercredi 22 avril}
+    J'ai effectué les tests de consommation CPU de la Suite Elastic, de Graylog, ainsi que de Filebeat. J'ai ensuite commencé à rédiger la synthèse de ces tests.
+\subsection{Jeudi 23 avril}
+    J'ai continué la rédaction, j'ai ajouté le test d'ingestion d'un grand nombre de logs, la comparaison de popularité.
+\subsection{Vendredi 24 avril}
+    J'ai rédigé le cahier des charges, puis ai eu une réunion avec Nastaran.
     
 
 \end{document}
