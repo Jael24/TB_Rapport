@@ -26,6 +26,10 @@
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage{listings}           % Source code formatting and highlighting
+\usepackage{float}              % Positioning of figures
+
+\newcommand{\ts}{\textsuperscript} % shortcut
+
 \frenchbsetup{StandardLists=true}
 \hypersetup{
     colorlinks,
@@ -58,6 +62,18 @@
   \lfoot{}
   \rfoot{}
 }
+
+
+% Modify the \paragraph behavior
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\bfseries}}
+\makeatother
+\setcounter{secnumdepth}{4} % how many sectioning levels to assign numbers to
+\setcounter{tocdepth}{4}    % how many sectioning levels to show in ToC
+
 
 % Document
 % ---
@@ -114,13 +130,13 @@ Ce Travail de Bachelor consiste en une évaluation de différentes technologies 
 \subsection{Étapes de réalisation du projet}
 
 \begin{itemize}
-    \item Évaluation théorique de plusieurs systèmes de gestion de logs.
+    \item Étude des systèmes de gestion de logs actuels.
     \subitem Choix des systèmes à évaluer.
-    \item Comparaison entre les différents systèmes.
-    \subitem Comparaison théorique \& pratique.
-    \item Choix d'un système.
-    \subitem En accord avec l'entreprise mendante.
+    \item Évaluation théorique des systèmes.
+    \item Prise en main et configuration des outils pour une comparaison théorique \& pratique.
+    \subitem Choix d'un système.
     \item Implémentation d'un cas d'utilisation concret fourni par DEPsys.
+    \subitem Avec un programme de simulation minimaliste de la plateforme GridEye.
     \item Implémentation d'une démonstration de faisabilité (Proof of Concept, PoC).
     \item Implémentation de librairies (SDK) pour l'interfaçage avec le Back-End de la solution GridEye (puis Front-End, puis outils externes).
 \end{itemize}
@@ -195,8 +211,10 @@ Afin de réaliser un classement regroupant le contenu de ces 4 tops, une note a 
 \[\frac{i * 100}{n}\]
 i étant la position dans le classement, et n le nombre total d'outil dans le classement.\\
 
-Voici les 4 classements et les points obtenus par chaque système :\\
-    \begin{tabular}{ |p{6cm}|p{1cm}|  }
+Les tableaux \ref{table-Classement1} et \ref{table-Classement2} montrent les points obtenus par chaque système.
+
+\begin{table}[]
+\subfloat[Classement de SoftwareTestingHelp]{\begin{tabular}{ |p{6cm}|p{1cm}|  }
      \hline
      \multicolumn{2}{|c|}{SoftwareTestingHelp} \\
      \hline
@@ -212,9 +230,9 @@ Voici les 4 classements et les points obtenus par chaque système :\\
      Graylog & 22\\
      Netwrix Auditor & 11\\
      \hline
-    \end{tabular}
-\hfill
-    \begin{tabular}{ |p{6cm}|p{1cm}|  }
+    \end{tabular}}
+\quad
+\subfloat[Classement de Comparitech]{\begin{tabular}{ |p{6cm}|p{1cm}|  }
      \hline
      \multicolumn{2}{|c|}{Comparitech} \\
      \hline
@@ -233,9 +251,14 @@ Voici les 4 classements et les points obtenus par chaque système :\\
      ManageEngine SyslogForwarder & 17\\
      TekWire Managelogs & 8\\
      \hline
-    \end{tabular}
+    \end{tabular}}
+    \caption{Classements SoftwareTestingHelp et Comparitech}
+    \label{table-Classement1}
 
-    \begin{tabular}{ |p{6cm}|p{1cm}|  }
+\end{table}
+
+\begin{table}[]
+\subfloat[Classement de AddictiveTips]{\begin{tabular}{ |p{6cm}|p{1cm}|  }
      \hline
      \multicolumn{2}{|c|}{AddictiveTips} \\
      \hline
@@ -248,9 +271,9 @@ Voici les 4 classements et les points obtenus par chaque système :\\
      Veriato & 33\\
      Splunk & 17\\
      \hline
-    \end{tabular}
-\hfill
-    \begin{tabular}{ |p{6cm}|p{1cm}|  }
+    \end{tabular}}
+\quad
+\subfloat[Classement de iTT Systems]{\begin{tabular}{ |p{6cm}|p{1cm}|  }
      \hline
      \multicolumn{2}{|c|}{iTT Systems} \\
      \hline
@@ -263,10 +286,15 @@ Voici les 4 classements et les points obtenus par chaque système :\\
      Veriato & 33\\
      Splunk & 17\\
      \hline
-    \end{tabular}
+    \end{tabular}}
+    \caption{Classements AddictiveTips et iTT Systems}
+    \label{table-Classement2}
+\end{table}
 
-Et voici le classement global, après addition des points obtenus dans les différents classements :
+Et le tableau \ref{t-classementGlobal} montre le classement global, calculé d'après l'addition des points obtenus dans les différents classements.
 
+\centering
+\begin{table}
 \centering
 \begin{tabular}{ |p{2cm}|p{6cm}|p{1cm}| } 
     \hline
@@ -295,7 +323,9 @@ Et voici le classement global, après addition des points obtenus dans les diff�
     21 & TekWire Managelogs & 8\\
     \hline
 \end{tabular}
-
+\caption{Classement global des systèmes de gestion de log}
+\label{t-classementGlobal}
+\end{table}
 \justify
 
 Avec ces résultats, on constate qu'il y a un certain nombre de systèmes appartenant à SolarWinds. Après une étude légèrement plus approfondie sur ces différents systèmes, il a été décidé de garder les suivants pour l'évaluation :
@@ -311,7 +341,7 @@ Avec ces résultats, on constate qu'il y a un certain nombre de systèmes appart
     \subitem Suggéré par DEPsys, et semble avoir une bonne documentation.
 \end{enumerate}
 
-\subsection{Évaluation}
+\subsection{Comparaison théorique}
 \subsubsection{Elastic Stack}
 La \og Elastic Stack \fg, ou \og Suite Elastic \fg en français, anciennement appelée \og ELK Stack \fg est composée de plusieurs outils :
 \begin{itemize}
@@ -325,7 +355,10 @@ La \og Elastic Stack \fg, ou \og Suite Elastic \fg en français, anciennement ap
     \subitem Une famille d'agent dédié au transfert de données.
 \end{itemize}
 
+La table \ref{t-resumeELK} montre un résumé des fonctionnalités disponible ainsi que des coûts lié à la Suite Elastic.
+
 \centering
+\begin{table}[H]
 \begin{tabular}{ |p{4cm}||p{12cm}|  }
     \hline
     \multicolumn{2}{|c|}{Elastic Stack} \\
@@ -349,12 +382,16 @@ La \og Elastic Stack \fg, ou \og Suite Elastic \fg en français, anciennement ap
     Coûts &  La suite Elastic propose différents abonnements. Il y a une offre gratuite, mais celle-ci ne contient pas de gestion d'alerte et de création de rapport. Les prix pour les offres payantes ne sont pas publics. Il faut contacter Elastic et les prix varient en fonction de la taille du système à implémenter.\\
     \hline
 \end{tabular}
+\caption{Résumé théorique de Elastic Stack}
+\label{t-resumeELK}
+\end{table}
 \justify
 
 \subsubsection{Graylog}
-Graylog un outil de gestion de logs. Il dispose de deux versions : Open Source et Enterprise.
+Graylog un outil de gestion de logs. Il dispose de deux versions : Open Source et Enterprise. La table \ref{t-resumeGraylog} montre les fonctionnalités du systèmes Graylog.
 
 \centering
+\begin{table}[H]
 \begin{tabular}{ |p{4cm}||p{12cm}|  }
     \hline
     \multicolumn{2}{|c|}{Graylog} \\
@@ -378,12 +415,17 @@ Graylog un outil de gestion de logs. Il dispose de deux versions : Open Source e
     Coûts &  Graylog propose deux versions : \og Open Source \fg et \og Enterprise \fg. La première est gratuite mais propose quelques fonctionnalités en moins, comme les rapports programmés ou le support technique. Les coûts de la version \og Enterprise \fg ne sont pas disponible, il faut contacter Graylog. À noter que la version \og Enterprise \fg est gratuite jusqu'à une utilisation de 5 GB par jour.\\
     \hline
 \end{tabular}
+\caption{Résumé théorique de Graylog}
+\label{t-resumeGraylog}
+\end{table}
+
 \justify
 
 \subsubsection{SolarWinds Loggly}
-SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans le cloud). Il dispose de plusieurs version, dont une gratuite.
+SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans le cloud). Il dispose de plusieurs version, dont une gratuite. La table \ref{t-resumeLoggly} montre les fonctionnalités et des informations sur les coûts de SolarWinds Loggly.
 
 \centering
+\begin{table}[H]
 \begin{tabular}{ |p{4cm}||p{12cm}|  }
     \hline
     \multicolumn{2}{|c|}{SolarWinds Loggly} \\
@@ -407,6 +449,10 @@ SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans 
     Coûts & Loggly propose une version gratuite et trois versions payantes. La version gratuite est limitée à un volume de 200 MB par jour, un seul utilisateur pouvant se connecter sur une instance, et ne contient pas certaines fonctionnalités comme la gestion des alertes. Les versions payantes varient entre 79 et 279 USD par mois, et proposent chacune quelques fonctionnalités en plus, et un volume de moins en moins limité.\\
     \hline
 \end{tabular}
+\caption{Résumé théorique de SolarWinds Loggly}
+\label{t-resumeLoggly}
+\end{table}
+
 \justify
 
 \subsubsection{Splunk}
@@ -421,9 +467,10 @@ Splunk est un outil de gestion de logs. Il est séparé en trois \og parties \fg
     \subitem Permet de lire dans l'index.
 \end{itemize}
 Chacune de ces fonctions peut être transformé en cluster si de grand volume de données sont à traiter.
-Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg.
+Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg. La table \ref{t-resumeSplunk} montre les fonctionnalités et les coûts relatif à Splunk.
 
 \centering
+\begin{table}[H]
 \begin{tabular}{ |p{4cm}||p{12cm}|  }
     \hline
     \multicolumn{2}{|c|}{Splunk} \\
@@ -447,9 +494,13 @@ Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg.
     Coûts & Les coûts sont en \og infrastructure-based pricing \fg et ne sont donc pas fixe. Mais Splunk Enterprise commence à 150\$ par mois. Splunk ne propose pas de version gratuite (mise à part l'essai de 60 jours).\\
     \hline
 \end{tabular}
+\caption{Résumé théorique de Splunk}
+\label{t-resumeSplunk}
+\end{table}
+
 \justify
 
-\subsubsection{Comparaison}
+\subsection{Tests réels et prise en main des logiciels}
 
 Plusieurs tests ont été effectués afin de pouvoir effectuer une comparaison de ces systèmes. Comme la plupart de ces tests obligent une prise en main concrète des logiciels, ceux-ci ont également permis d'avoir une idée de la facilité d'utilisation, de la flexibilité ainsi que de l'utilisabilité ( \og user-friendliness \fg) des systèmes.
 
@@ -471,11 +522,11 @@ Voici les versions des logicielles utilisées pour effectuer ces tests :
     \subitem Loggly Lite (Cloud)
 \end{itemize}
 
-\textbf{Test de débit d'ingestion de log}
+\subsubsection{Test de débit d'ingestion de log}
 
 Le premier test de cette comparaison consiste en un test de débit. Cela permet d'avoir une première idée de la performance des applications.
 
-Conditions de tests :
+\textbf{Conditions de tests} \\
 \begin{itemize}
     \item Chargement d'un fichier de logs.
     \subitem Le fichier contient 98'305 logs identiques.
@@ -489,8 +540,10 @@ Conditions de tests :
     \item Le résultat est un débit exprimé en EPS (Event Per Second), qui correspond aux nombres de logs que le système aura pu ingéré en une seconde.
 \end{itemize}
 
-Résultats :
+La table \ref{t-testIngestion} montre \textbf{les résultats} des tests d'ingestion.
 
+\centering
+\begin{table}[H]
 \centering
 \begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
     \hline
@@ -501,6 +554,9 @@ Résultats :
     Avec filtrage & 9'181 & 7'868 & 2'628 & -\\
     \hline
 \end{tabular}
+\caption{Résultats des tests de débit d'ingestion}
+\label{t-testIngestion}
+\end{table}
 \justify
 
 (*) Loggly n'acceptant que des fichiers de taille inférieure à 5 MB, le fichier à été réduit à 3'999 logs.
@@ -508,15 +564,15 @@ Résultats :
 Splunk favorise l'extraction d'informations (parsing) après avoir stocké les logs dans le système. Il est donc compliqué d'ajouter un filtrage avant le stockage et ça n'a donc pas été réalisé. Par contre, Splunk effectue automatiquement une extraction de la date des logs. Son débit à donc été classé dans la catégorie \og avec filtrage \fg.
 Loggly ayant été écarté assez tôt de l'évaluation, la partie \og avec filtrage \fg n'a pas été testée. \\
 
-Conclusion : \\
+\textbf{Conclusion} \\
 Sans filtrage, on constate que Graylog possède un débit supérieur à Elastic Stack. Loggly n'acceptant pas des fichiers de grande taille, il est difficilement comparable. Avec filtrage, étonnemment, la Suite Elastic gagne en débit. Elle possède donc un meilleur débit que Graylog et Splunk.
 Après ce test, outre les résultats comptables, il se dessine surtout une tendance vers Graylog et Elastic Stack, car ces deux systèmes sont plus \og ouvert \fg que les autres. Il n'y a pas eu de difficultés particulières lors de l'utilisation, pas de contraintes comme la taille du fichier ou encore le moment du filtrage au sein du pipeline.
 
-\textbf{Test d'ingestion d'une grande quantité de logs}
+\subsubsection{Test d'ingestion d'une grande quantité de logs}
 
 Ce test a pour but de mettre en évidence les limites de certains systèmes lors de l'ingestion de gros fichier de logs. Il permet également d'avoir une brève vue sur la constance du débit mesuré lors du test précédent.
 
-Conditions de tests :
+\textbf{Conditions de tests} \\
 \begin{itemize}
     \item Chargement d'un fichier de logs.
     \subitem Le fichier contient 999'999 logs identiques.
@@ -525,8 +581,10 @@ Conditions de tests :
     \item Le résultat est soit une limite supérieure, soit \og > 1'000'000 \fg
 \end{itemize}
 
-Résultats : 
+La table \ref{t-testGrandeIngestion} montre \textbf{les résultats} du test d'ingestion d'une grande quantité de logs.
 
+\centering
+\begin{table}[H]
 \centering
 \begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|  }
     \hline
@@ -535,17 +593,20 @@ Résultats :
     > 1'000'000 & > 1'000'000 & > 1'000'000 & \textasciitilde 4'000 (5 MB) \\
     \hline
 \end{tabular}
+\caption{Résultats des tests d'ingestion de grande quantité de logs}
+\label{t-testGrandeIngestion}
+\end{table}
 \justify
 
-Conclusion : \\
+\textbf{Conclusion} \\
 Ce test permet simplement de montrer que les systèmes travaillant avec un agent, soit selon la méthode PUSH, n'ont pas de problème de taille de fichier, car l'agent lit et envoie les logs au fur et à mesure. Loggly est le seul ici utilisant la méthode PULL. Au niveau des débits, ceux d'Elastic Stack et Graylog ont été divisé par 2, alors que celui de Splunk est resté stable. Pour Loggly, il n'y a pas eu de différence, étant donné qu'il est limité en taille de fichier.
 
 
-\textbf{Test de consommation CPU}
+\subsubsection{Test de consommation CPU}
 
 Ce test-ci a pour but de pouvoir comparer les systèmes de gestion de logs Elastic Stack et Graylog en terme de performance.
 
-Conditions de test :
+\textbf{Conditions de test} \\
 \begin{itemize}
     \item Chargement du même fichier de log que pour le test de débit.
     \item L'utilisation du CPU sera réduite au minimum hors système à tester.
@@ -554,23 +615,38 @@ Conditions de test :
     \item Lors de la réception, l'agent Filebeat se situera sur une autre machine.
 \end{itemize}
 
-Résultats :
+\textbf{Résultats} \\
+La figure \ref{f-ElasticCPU} montre la consommation CPU et l'historique du trafic réseau lors de la réception des logs. La figure \ref{f-GraylogCPU} montre les mêmes informations, mais pour le système Graylog. Enfin, la figure \ref{f-FilebeatCPU} montre ces informations-ci avec l'agent Filebeat.
 
-Elastic Stack (Logstash - Elasticsearch - Kibana), réception des logs :\\
-\includegraphics[width=18cm]{img/screenshots/Elastic_CPU_MEM_Receive_modified.png}\\
-Graylog, réception des logs :\\
-\includegraphics[width=18cm]{img/screenshots/Graylog_CPU_MEM_Receive_modified.png}\\
-Filebeat, envoi des logs :\\
-\includegraphics[width=18cm]{img/screenshots/Filebeat_send_modified.png}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/Elastic_CPU_MEM_Receive_modified.png}
+    \caption{Consommation CPU Elastic Stack}
+    \label{f-ElasticCPU}
+\end{figure}
 
-Conclusion : \\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/Graylog_CPU_MEM_Receive_modified.png}
+    \caption{Consommation CPU Graylog}
+    \label{f-GraylogCPU}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/Filebeat_send_modified.png}
+    \caption{Consommation CPU Filebeat}
+    \label{f-FilebeatCPU}
+\end{figure}
+
+\textbf{Conclusion} \\
 Premièrement, on constate que l'agent Filebeat est un agent très léger puisque son action ne se fait quasiment pas ressentir sur le taux d'utilisation du CPU. Pour ce qui est du taux d'utilisation CPU par la Suite Elastic, on remarque que lors de la réception et le stockage des logs, tous les CPUs tournaient à 100\% de leur capacité, et la charge dure environ 25 secondes. Pour Graylog, les CPUs ne sont pas autant sollicité, ou du moins pas tous en même temps. Ils varient entre 20\% et 100\% et la distribution est plutôt égale entre les CPUs. On peut donc estimer un taux d'utilisation moyen à 60-70\%. La charge dure cette fois-ci environ 45 sec. À noter que Graylog ingère les logs en env. 7 secondes, puis travaille encore pendant env. 35 secondes, alors que la Suite Elastic fait tout en même temps. On peut constater ceci grâce à la courbe de l'historique du trafic réseau.
 
-\textbf{Popularité des systèmes}
+\subsubsection{Popularité des systèmes}
 
 La comparaison de popularité des différents systèmes permet de se faire un idée sur les tendances actuelles et passées d'utilisation de ces systèmes. Elle a également pour but de pouvoir éventuellement anticiper les futures tendances. Ces données sont importantes lors du choix d'un logiciel, afin de pouvoir compter sur un support de la communauté lors des problèmes qui arriveront pendant le développement.
 
-Conditions de tests :
+\textbf{Conditions de tests} \\
 
 \begin{itemize}
     \item Les courbes de tendances seront tirées de Google Trends.
@@ -580,7 +656,7 @@ Conditions de tests :
     \item Il n'y aura pas d'autre restriction de recherche (catégorie, outil Google)
 \end{itemize}
 
-Résultats :
+\textbf{Résultats} \\
 
 Courbes de tendance des 4 systèmes :\\
 \includegraphics[width=18cm]{img/screenshots/Tendance_4.png}\\
@@ -589,8 +665,16 @@ Courbes de tendance de Graylog et Splunk :\\
 
 La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Suite \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
 
-Conclusion : \\
+\textbf{Conclusion} \\
 On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième ne que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
+
+\subsection{Conclusion de l'évaluation}
+\subsubsection{Analyse théorique des systèmes}
+Au niveau fonctionnel, les quatre systèmes de gestion de logs ne se différencient pas énormément. Ils suivent à peu près tous le même schéma et permettent tous de faire les mêmes actions (reporting, alerting, analyse, etc.). Loggly est légèrement différent dans le sens où son approche de collecte de log par défaut est maximaliste (approche PULL). Il met en effet un endpoint à disposition, sur lequel on peut envoyer des données. Il s'agit la d'une différence mineure car bien que les autres systèmes privilégient et facilitent l'approche minimaliste, il est également possible de configurer un endpoint semblable pour les systèmes Elastic Stack, Graylog et Splunk.
+Pour ce qui est du non-fonctionnel, il y a quelques systèmes qui se démarquent. Premièrement, Loggly de SolarWinds est uniquement disponible dans une version Cloud. La Suite Elastic et Splunk sont eux disponibles tant dans une version Cloud que dans une version sur site. Graylog lui est uniquement disponible dans une version locale. Il y a également l'architecture des systèmes. La Suite Elastic est formée de 3 applications indépendantes, et en utilise une 4\ts{ème} pour l'agent Beat. Graylog est composé d'un système, et utilise des agents ne lui appartenant pas, comme Beat. Splunk suit la même architecture que Graylog, mais possède son propre agent, le Splunk Forwarder. Et Loggly est une infrastructure cloud sans agent.
+Globalement, l'analyse théorique des systèmes de gestion de logs ne permet pas de faire un choix concret sur un système ou un autre pour la réalisation d'une solution destinée au système GridEye.
+\subsubsection{Analyse pratique des systèmes}
+
 
 \newpage
 
@@ -604,8 +688,13 @@ On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côt
 \appendix
 \justify
 
-\section{Images}
+\listoftables
+\newpage
 
+\listoffigures
+\newpage
+
+\section{Bibliographie}
 \section{Détails des tests}
 
 \subsection{Tests de débit d'ingestion}
@@ -734,7 +823,9 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
 \subsection{Jeudi 23 avril}
     J'ai continué la rédaction, j'ai ajouté le test d'ingestion d'un grand nombre de logs, la comparaison de popularité.
 \subsection{Vendredi 24 avril}
-    J'ai rédigé le cahier des charges, puis ai eu une réunion avec Nastaran.
+    J'ai rédigé le cahier des charges, puis ai eu une réunion avec Nastaran. Nous avons discuté du cahier des charges, des améliorations à y apporter. Ensuite, nous avons un peu regarder l'état du rapport actuel. Il faut entre autre pense a y ajouter les références (tableaux, image, bibliographie). Nous avons ensuite convenu de fixer une réunion avec Jonathan et Pascal afin de leur présenter les résultats de l'évaluation. J'ai donc fixé cette réunion à jeudi 30 avril.
+\subsection{Mercredi 29 avril}
+    J'ai modifié le rapport pour y ajouter les références sur les tableaux et sur les figures. J'ai également amélioré les annexes avec la table des tableaux et la table des figures. J'ai également commencé la conclusion finale de l'évaluation, en rédigeant le paragraphe concernant l'analyse théorique.
     
 
 \end{document}
