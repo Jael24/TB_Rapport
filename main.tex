@@ -27,8 +27,34 @@
 \usepackage[french]{babel}
 \usepackage{listings}           % Source code formatting and highlighting
 \usepackage{float}              % Positioning of figures
+\usepackage{xcolor}             % Color in code blocks
 
 \newcommand{\ts}{\textsuperscript} % shortcut
+
+% Code Block style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
 
 \frenchbsetup{StandardLists=true}
 \hypersetup{
@@ -500,6 +526,42 @@ Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg. La ta
 
 \justify
 
+\subsubsection{Popularité des systèmes}
+
+La comparaison de popularité des différents systèmes permet de se faire un idée sur les tendances actuelles et passées d'utilisation de ces systèmes. Elle a également pour but de pouvoir éventuellement anticiper les futures tendances. Ces données sont importantes lors du choix d'un logiciel, afin de pouvoir compter sur un support de la communauté lors des problèmes qui arriveront pendant le développement.
+
+\textbf{Conditions de tests} \\
+
+\begin{itemize}
+    \item Les courbes de tendances seront tirées de Google Trends.
+    \item Les courbes porteront sur les 10 dernières années.
+    \subitem Du 23 avril 2010 au 23 avril 2020
+    \item Les courbes porteront sur les recherches dans tous les pays du monde.
+    \item Il n'y aura pas d'autre restriction de recherche (catégorie, outil Google)
+\end{itemize}
+
+\textbf{Résultats} \\
+La figure \ref{f-Trends4Systemes} montre les courbes de tendances des quatre systèmes. Les courbes de Loggly et Graylog étant particulièrement basses et donc difficilement comparable, la figure \ref{f-Trends2Systemes} permet de les comparer entre eux.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/Tendance_4.png}
+    \caption{Courbes Google Trends des quatre systèmes}
+    \label{f-Trends4Systemes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/Tendance_2.png}
+    \caption{Courbes Google Trends de Graylog et Loggly}
+    \label{f-Trends2Systemes}
+\end{figure}
+
+La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Suite \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
+
+\textbf{Conclusion} \\
+On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième ne que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
+
 \subsection{Tests réels et prise en main des logiciels}
 
 Plusieurs tests ont été effectués afin de pouvoir effectuer une comparaison de ces systèmes. Comme la plupart de ces tests obligent une prise en main concrète des logiciels, ceux-ci ont également permis d'avoir une idée de la facilité d'utilisation, de la flexibilité ainsi que de l'utilisabilité ( \og user-friendliness \fg) des systèmes.
@@ -642,39 +704,175 @@ La figure \ref{f-ElasticCPU} montre la consommation CPU et l'historique du trafi
 \textbf{Conclusion} \\
 Premièrement, on constate que l'agent Filebeat est un agent très léger puisque son action ne se fait quasiment pas ressentir sur le taux d'utilisation du CPU. Pour ce qui est du taux d'utilisation CPU par la Suite Elastic, on remarque que lors de la réception et le stockage des logs, tous les CPUs tournaient à 100\% de leur capacité, et la charge dure environ 25 secondes. Pour Graylog, les CPUs ne sont pas autant sollicité, ou du moins pas tous en même temps. Ils varient entre 20\% et 100\% et la distribution est plutôt égale entre les CPUs. On peut donc estimer un taux d'utilisation moyen à 60-70\%. La charge dure cette fois-ci environ 45 sec. À noter que Graylog ingère les logs en env. 7 secondes, puis travaille encore pendant env. 35 secondes, alors que la Suite Elastic fait tout en même temps. On peut constater ceci grâce à la courbe de l'historique du trafic réseau.
 
-\subsubsection{Popularité des systèmes}
-
-La comparaison de popularité des différents systèmes permet de se faire un idée sur les tendances actuelles et passées d'utilisation de ces systèmes. Elle a également pour but de pouvoir éventuellement anticiper les futures tendances. Ces données sont importantes lors du choix d'un logiciel, afin de pouvoir compter sur un support de la communauté lors des problèmes qui arriveront pendant le développement.
-
-\textbf{Conditions de tests} \\
-
-\begin{itemize}
-    \item Les courbes de tendances seront tirées de Google Trends.
-    \item Les courbes porteront sur les 10 dernières années.
-    \subitem Du 23 avril 2010 au 23 avril 2020
-    \item Les courbes porteront sur les recherches dans tous les pays du monde.
-    \item Il n'y aura pas d'autre restriction de recherche (catégorie, outil Google)
-\end{itemize}
-
-\textbf{Résultats} \\
-
-Courbes de tendance des 4 systèmes :\\
-\includegraphics[width=18cm]{img/screenshots/Tendance_4.png}\\
-Courbes de tendance de Graylog et Splunk :\\
-\includegraphics[width=18cm]{img/screenshots/Tendance_2.png}\\
-
-La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Suite \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
-
-\textbf{Conclusion} \\
-On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième ne que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
-
 \subsection{Conclusion de l'évaluation}
 \subsubsection{Analyse théorique des systèmes}
 Au niveau fonctionnel, les quatre systèmes de gestion de logs ne se différencient pas énormément. Ils suivent à peu près tous le même schéma et permettent tous de faire les mêmes actions (reporting, alerting, analyse, etc.). Loggly est légèrement différent dans le sens où son approche de collecte de log par défaut est maximaliste (approche PULL). Il met en effet un endpoint à disposition, sur lequel on peut envoyer des données. Il s'agit la d'une différence mineure car bien que les autres systèmes privilégient et facilitent l'approche minimaliste, il est également possible de configurer un endpoint semblable pour les systèmes Elastic Stack, Graylog et Splunk.
-Pour ce qui est du non-fonctionnel, il y a quelques systèmes qui se démarquent. Premièrement, Loggly de SolarWinds est uniquement disponible dans une version Cloud. La Suite Elastic et Splunk sont eux disponibles tant dans une version Cloud que dans une version sur site. Graylog lui est uniquement disponible dans une version locale. Il y a également l'architecture des systèmes. La Suite Elastic est formée de 3 applications indépendantes, et en utilise une 4\ts{ème} pour l'agent Beat. Graylog est composé d'un système, et utilise des agents ne lui appartenant pas, comme Beat. Splunk suit la même architecture que Graylog, mais possède son propre agent, le Splunk Forwarder. Et Loggly est une infrastructure cloud sans agent.
-Globalement, l'analyse théorique des systèmes de gestion de logs ne permet pas de faire un choix concret sur un système ou un autre pour la réalisation d'une solution destinée au système GridEye.
+Pour ce qui est du non-fonctionnel, il y a quelques points où les systèmes se démarquent. Premièrement, Loggly de SolarWinds est uniquement disponible dans une version Cloud. La Suite Elastic et Splunk sont eux disponibles tant dans une version Cloud que dans une version sur site. Graylog lui est uniquement disponible dans une version locale. Il y a également l'architecture des systèmes. La Suite Elastic est formée de 3 applications indépendantes, et en utilise une 4\ts{ème} pour l'agent Beat. Graylog est composé d'un système, et utilise des agents ne lui appartenant pas, comme Beat. Splunk suit la même architecture que Graylog, mais possède son propre agent, le Splunk Forwarder. Et Loggly est une infrastructure cloud sans agent.
+Reste la comparaison de la popularité des applications. Celle-ci a montré une nette avance pour Splunk et Elastic Stack, devant Graylog, puis Loggly qui est vraiment peu populaire. \\
+Globalement, l'analyse théorique des systèmes de gestion de logs ne permet pas de faire un choix concret sur un système ou un autre pour la réalisation d'une solution destinée au système GridEye. Elle permettrait tout au plus de se détacher de Loggly, qui n'est vraiment pas recommandable du point de vue de sa courbe de tendance.
 \subsubsection{Analyse pratique des systèmes}
+Le but des tests réels était de pouvoir confronter les systèmes de gestion de log au niveau de leur performance, et également de réaliser une prise en main des différents logiciels, avec tout ce que cela implique (installation, configuration, etc.). Cette deuxième partie avait également pour but d'évaluer l'utilisabilité des divers systèmes.
+Au niveau des performances, on a pu voir que le système Graylog et Elastic Stack se distinguaient légèrement avec un meilleur débit d'ingestion. Que tous les systèmes, excepté Loggly, pouvaient, grâce à leur approche minimaliste, recevoir des grandes quantités de logs.\\
+À ce point-ci de l'évaluation, un premier bilan de l'\og user-friendliness \fg des systèmes à également pu être tiré :
+\begin{itemize}
+    \item SolarWinds Loggly est relativement simple d'utilisation. Sa caractéristique Cloud facilite également l'installation (il n'y en a pas, il suffit de se créer un compte et nous recevons un lien vers notre version d'essai).
+    \item Graylog est un système ayant une interface plutôt complète et efficace. L'interface graphique permet directement de configurer le système de manière simple (elle permet d'ajouter des règles d'extraction d'informations dans les logs, de configurer les entrées ouvert aux agents, etc.).
+    \item Elastic Stack est une \og suite \fg de logiciels, ce qui la rend très ouverte. On peut en effet choisir d'utiliser ces software de base, mais également utiliser d'autres applications. Par exemple, on peu prendre un agent de la famille Beat, mais on pourrait aussi choisir un agent Prometheus. Chaque logiciel est configurable via des fichiers de configuration. On peut également choisir d'utiliser les 4 logiciels, ou pas. Par exemple enlever Logstash si l'on a pas besoin de ces filtres. Cette ouverture le rend agréable à utiliser.
+    \item Splunk est comparable à Graylog et Elastic Stack dans tous les tests, mais l'expérience utilisateur est de son côté moins bonne. Le système est plus une sorte de \og boîte noire \fg dans laquelle il n'est pas possible de tout configurer. L'extraction des informations des logs n'a par exemple pas pu avoir lieu avant l'indexage, car le système est prévu pour le faire après.
+\end{itemize}
+Avec ces premiers tests, nous avons déjà pu écarter la solution SolarWinds Loggly, qui ne correspondait pas aux attentes et dont les contraintes liées au Cloud ne sont pas souhaitées. Splunk n'est également pas recommandé à cause de son manque d'ouverture.
+Ensuite, il y a encore eu le test d'utilisation du CPU entre la Suite Elastic et Graylog. Avec celui-ci, on pourrait donner un très léger avantage à Graylog.
 
+\subsubsection{Recommandation}
+En conclusion, il est difficile de faire un choix entre les deux systèmes Graylog et la Suite Elastic. Mais de part sa très grande popularité, amenant son lot de réponse dans les forums et autre article permettant d'accélérer le développement d'un logiciel, ainsi que de son caractère très ouvert lié à son \og architecture suite \fg, la \textbf{Suite Elastic} est le meilleur choix dans l'optique de mise en place d'une solution de gestion de logs pour l'infrastructure GridEye.
+
+\newpage
+
+\section{Implémentation du cas d'utilisation}
+
+\subsection{Installation de la Suite Elastic}
+
+Lors de l'installation de la Suite Elastic, il est important (et obligatoire) d'avoir la même version pour tous les composants. P. ex. dans le cas présent, la version 7.6.2 est utilisée. On aura donc Elasticsearch 7.6.2, Logstash 7.6.2, etc.
+L'installation doit également suivre un ordre particulier :
+\begin{enumerate}
+    \item Elasticsearch
+    \item Kibana
+    \item Logstash
+    \item Beats
+\end{enumerate}
+L'installation décrite ici est réalisée sur un système Ubuntu 20.04.
+
+\subsubsection{Elasticsearch}
+Téléchargement du paquet \verb,.deb, et de sa signature.
+\begin{lstlisting}[language=bash]
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb.sha512
+\end{lstlisting}
+Il faut contrôler la signature SHA du paquet téléchargé, en la comparant avec la somme de contrôle publique.
+\begin{lstlisting}[language=bash]
+shasum -a 512 -c elasticsearch-7.6.2-amd64.deb.sha512
+\end{lstlisting}
+La réponse doit être \verb,elasticsearch-7.6.2-amd64.deb: OK,, avec le bon numéro de version.
+Il suffit enfin d'installer le paquet précédemment téléchargé.
+\begin{lstlisting}[language=bash]
+sudo dpkg -i elasticsearch-7.6.2-amd64.deb
+\end{lstlisting}
+Afin de tester si l'installation est réussie, il faut lancer Elasticsearch
+\begin{lstlisting}[language=bash]
+sudo -i service elasticsearch start
+\end{lstlisting}
+Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement d'Elasticsearch est contrôlable à l'adresse \verb,localhost:9200,. Ou alors avec la commande \verb,curl, suivante :
+\begin{lstlisting}[language=bash]
+curl -X GET "localhost:9200/?pretty"
+\end{lstlisting}
+
+La figure \ref{f-elasticsearchInstalled} montre une installation complète et réussie.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{img/screenshots/elasticsearch_installed.png}
+    \caption{Page d'accueil Elasticsearch}
+    \label{f-elasticsearchInstalled}
+\end{figure}
+L'application s'arrête également grâce à la commande \verb,service,.
+\begin{lstlisting}[language=bash]
+sudo -i service elasticsearch stop
+\end{lstlisting}
+
+\subsubsection{Kibana}
+Téléchargement du paquet \verb,.deb, et de sa signature.
+\begin{lstlisting}[language=bash]
+wget https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-amd64.deb
+wget https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-amd64.deb.sha512
+\end{lstlisting}
+Il faut contrôler la signature SHA du paquet téléchargé, en la comparant avec la somme de contrôle publique.
+\begin{lstlisting}[language=bash]
+shasum -a 512 -c kibana-7.6.2-amd64.deb.sha512
+\end{lstlisting}
+La réponse doit être \verb,kibana-7.6.2-amd64.deb: OK,, avec le bon numéro de version.
+Il suffit enfin d'installer le paquet précédemment téléchargé.
+\begin{lstlisting}[language=bash]
+sudo dpkg -i kibana-7.6.2-amd64.deb
+\end{lstlisting}
+Afin de tester si l'installation est réussie, il faut lancer Kibana
+\begin{lstlisting}[language=bash]
+sudo -i service kibana start
+\end{lstlisting}
+Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement de Kibana est contrôlable à l'adresse \verb,localhost:5601,.
+
+La figure \ref{f-kibanaInstalled} montre une installation complète et réussie.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/kibana_installed.png}
+    \caption{Page d'accueil Kibana}
+    \label{f-kibanaInstalled}
+\end{figure}
+L'application s'arrête également grâce à la commande \verb,service,.
+\begin{lstlisting}[language=bash]
+sudo -i service kibana stop
+\end{lstlisting}
+
+\subsubsection{Logstash}
+Logstash nécessite la présence de Java sur son système. L'installation décrite ci-dessous fonctionne avec une version de Java open-source : \verb,OpenJDK,. Il est bien sûr possible d'utiliser la version Java officielle d'Oracle.
+
+Il faut donc contrôler si Java est bien présent sur la machine.
+\begin{lstlisting}[language=bash]
+java -version
+\end{lstlisting}
+Sur un système avec Java installé, la réponse est de la forme suivante :
+\begin{lstlisting}[language=bash]
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-3ubuntu1)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-3ubuntu1, mixed mode, sharing)
+\end{lstlisting}
+
+Tout d'abord, il faut télécharger et installer la clé PGP d'Elastic permettant de télécharger le paquet avec \verb,APT,.
+\begin{lstlisting}[language=bash]
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+\end{lstlisting}
+Il faut ensuite télécharger, si ce n'est pas déjà le cas sur la machine, installer le paquet \verb,apt-transport-https,.
+\begin{lstlisting}[language=bash]
+sudo apt-get install apt-transport-https
+\end{lstlisting}
+Il faut ensuite sauvegarder la définition du répertoire à \verb,/etc/apt/sources.list.d/elastic-7.x.list,.
+\begin{lstlisting}[language=bash]
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+\end{lstlisting}
+Enfin, il faut télécharget et installer Logstash.
+\begin{lstlisting}[language=bash]
+sudo apt-get update && sudo apt-get install logstash
+\end{lstlisting}
+Il est possible de tester si Logstash a été correctement installé en le lançant. Cependant, il ne sera passera rien, car il n'est pas configuré. Toutefois, si le système ne renvoie pas d'erreur, c'est que Logstash a été correctement installé, en principe.
+\begin{lstlisting}[language=bash]
+sudo systemctl start logstash.service
+\end{lstlisting}
+Logstash s'arrête avec une commande similaire.
+\begin{lstlisting}[language=bash]
+sudo systemctl stop logstash.service
+\end{lstlisting}
+
+La partie \og serveur \fg est de la Suite Elastic est maintenant installée. Il reste encore à installer un agent Beat sur la machine générant les logs.
+
+\subsubsection{Beat}
+Il existe toute une panoplie d'agent de transfert léger dans la famille Beat. La liste des agents Beat existants est disponible sur le site d'Elastic. Il existe des Beat créés par Elastic, et également un grand nombre de Beat communautaires, créés, comme leur nom l'indique, par la communauté (p. ex. dockbeat pour Docker, Kafkabeat pour Kafka, etc.).
+Comme le programme de simulation de l'infrastructure GridEye utilisé pour l'implémentation du cas d'utilisation stocke les logs générés dans un fichier, le descriptif d'installation de ce document se concentrera sur l'installation d'un agent de type \verb,Filebeat,.
+
+Sur la machine générant les logs, il faut donc télécharger le paquet de \verb,Filebeat,.
+\begin{lstlisting}[language=bash]
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-amd64.deb
+\end{lstlisting}
+Finalement, il faut installer le paquet téléchargé.
+\begin{lstlisting}[language=bash]
+sudo dpkg -i filebeat-7.6.2-amd64.deb
+\end{lstlisting}
+
+Comme pour Logstash, il est possible de tester si Filebeat a été correctement installé en le lançant. Cependant, il ne sera passera rien, car il n'est pas configuré. Toutefois, si le système ne renvoie pas d'erreur, c'est que Filebeat a été correctement installé, en principe.
+\begin{lstlisting}[language=bash]
+sudo service filebeat start
+\end{lstlisting}
+Filebeat s'arrête avec une commande similaire.
+\begin{lstlisting}[language=bash]
+sudo service filebeat stop
+\end{lstlisting}
 
 \newpage
 
@@ -826,6 +1024,10 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
     J'ai rédigé le cahier des charges, puis ai eu une réunion avec Nastaran. Nous avons discuté du cahier des charges, des améliorations à y apporter. Ensuite, nous avons un peu regarder l'état du rapport actuel. Il faut entre autre pense a y ajouter les références (tableaux, image, bibliographie). Nous avons ensuite convenu de fixer une réunion avec Jonathan et Pascal afin de leur présenter les résultats de l'évaluation. J'ai donc fixé cette réunion à jeudi 30 avril.
 \subsection{Mercredi 29 avril}
     J'ai modifié le rapport pour y ajouter les références sur les tableaux et sur les figures. J'ai également amélioré les annexes avec la table des tableaux et la table des figures. J'ai également commencé la conclusion finale de l'évaluation, en rédigeant le paragraphe concernant l'analyse théorique.
+\subsection{Jeudi 30 avril}
+    J'ai continué le rapport. J'y ai ajouté une conclusion finale à l'évaluation. J'ai ensuite eu une réunion avec Pascal, Jonathan et Nastaran. Je leur ai présenté les résultats de mon évaluation et nous avons convenu ensemble d'effectuer l'implémentation du cas d'utilisation avec le système Elastic Stack.
+\subsection{Mercredi 6 mai}
+    J'ai pris en main le programme de Jonathan qui simule l'infrastructure GridEye de façon minimale. Je l'ai modifié légérement pour qu'il stocke les logs dans un fichier, plutôt que de les afficher dans la console. J'ai ensuite commencé à rédiger la partie implémentation du cas d'utilisation dans le rapport, tout en testant les commandes que je met dans le rapport sur une installation neuve d'Ubuntu.
     
 
 \end{document}
