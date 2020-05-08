@@ -28,6 +28,10 @@
 \usepackage{listings}           % Source code formatting and highlighting
 \usepackage{float}              % Positioning of figures
 \usepackage{xcolor}             % Color in code blocks
+\usepackage[toc,page]{appendix} % Reference to appendix
+\usepackage{amssymb}            % Special symbols
+\usepackage{biblatex}           % Bibliography
+\addbibresource{biblio/bibliography.bib}
 
 \newcommand{\ts}{\textsuperscript} % shortcut
 
@@ -192,7 +196,7 @@ Technologies:
 
 \subsection{Critères d'évaluation}
 
-Pour réaliser une évaluation de différents système de gestion de log, il faut obligatoirement choisir des critères d'évaluation. Ces critères se basent sur deux sources. La première étant les demandes formulées par DEPsys, et la deuxième provient des différentes fonctionnalités nécessaires à un système de gestion de logs. Voici les critères retenus :
+Pour réaliser une évaluation de différents système de gestion de log, il faut obligatoirement choisir des critères d'évaluation. Ces critères se basent sur deux sources. La première étant les demandes formulées par DEPsys, et la deuxième provient des différentes fonctionnalités nécessaires à un système de gestion de logs \cite{noauthor_what_nodate} \cite{noauthor_gestion_2019}. Voici les critères retenus :
 
 \begin{itemize}\itemsep0pt \parskip0pt \parsep0pt
 \item La collecte des logs
@@ -221,13 +225,13 @@ Comme pour le choix des critères d'évaluation, les différents systèmes qui v
 Quatre classements différents ont été sélectionnés afin d'avoir plusieurs avis différents, tout en restant dans une quantité raisonnable d'analyses. Les classements qui allaient être utilisés devaient être neutre. On entend par là que le site réalisant le classement ne doit pas proposer, par exemple, une solution cloud utilisant un certain outil de gestion de log, auquel cas son classement serait forcément biaisé. Il fallait également que le classement soi récent, étant donné la vitesse d'évolution générale des outils informatiques. Une période d'un an maximum a été définie.\\\\
 Les classements suivants ont été choisis :
 \begin{itemize}
-    \item \href{https://www.softwaretestinghelp.com/log-management-software/}{Top 8 BEST Log Management Software}
+    \item Top 8 BEST Log Management Software \cite{noauthor_top_nodate}
     \subitem Classement datant de mars 2020, et publié par \textit{SoftwareTestingHelp}.
-    \item \href{https://www.ittsystems.com/log-manager-software-and-tools/}{Best Log Manager \& Monitoring Software \& Tools}
+    \item Best Log Manager \& Monitoring Software \& Tools \cite{noauthor_best_nodate}
     \subitem Classement datant de janvier 2020, et publié par \textit{iTT Systems}.
-    \item \href{https://www.addictivetips.com/net-admin/linux-log-management-tools/}{6 Best Log Management Tools}
+    \item 6 Best Log Management Tools \cite{noauthor_6_2019}
     \subitem Classement datant de août 2019, et publié par \textit{AddictiveTips}.
-    \item \href{https://www.comparitech.com/net-admin/log-management-tools/}{13 Best Log Management \& Analysis Tools}
+    \item 13 Best Log Management \& Analysis Tools \cite{says_ten_2019}
     \subitem Classement datant de août 2019, et publié par \textit{Comparitech}.
 \end{itemize}
 
@@ -533,7 +537,7 @@ La comparaison de popularité des différents systèmes permet de se faire un id
 \textbf{Conditions de tests} \\
 
 \begin{itemize}
-    \item Les courbes de tendances seront tirées de Google Trends.
+    \item Les courbes de tendances seront tirées de Google Trends \cite{noauthor_google_nodate}.
     \item Les courbes porteront sur les 10 dernières années.
     \subitem Du 23 avril 2010 au 23 avril 2020
     \item Les courbes porteront sur les recherches dans tous les pays du monde.
@@ -741,6 +745,7 @@ L'installation doit également suivre un ordre particulier :
     \item Beats
 \end{enumerate}
 L'installation décrite ici est réalisée sur un système Ubuntu 20.04.
+Les différentes étapes d'installation de la Suite Elastic qui vont suivre sont tirés du tutoriel officiel d'installation de la Suite Elastic \cite{noauthor_installing_nodate}.
 
 \subsubsection{Elasticsearch}
 Téléchargement du paquet \verb,.deb, et de sa signature.
@@ -759,7 +764,7 @@ sudo dpkg -i elasticsearch-7.6.2-amd64.deb
 \end{lstlisting}
 Afin de tester si l'installation est réussie, il faut lancer Elasticsearch
 \begin{lstlisting}[language=bash]
-sudo -i service elasticsearch start
+sudo service elasticsearch start
 \end{lstlisting}
 Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement d'Elasticsearch est contrôlable à l'adresse \verb,localhost:9200,. Ou alors avec la commande \verb,curl, suivante :
 \begin{lstlisting}[language=bash]
@@ -775,7 +780,7 @@ La figure \ref{f-elasticsearchInstalled} montre une installation complète et r�
 \end{figure}
 L'application s'arrête également grâce à la commande \verb,service,.
 \begin{lstlisting}[language=bash]
-sudo -i service elasticsearch stop
+sudo service elasticsearch stop
 \end{lstlisting}
 
 \subsubsection{Kibana}
@@ -795,7 +800,7 @@ sudo dpkg -i kibana-7.6.2-amd64.deb
 \end{lstlisting}
 Afin de tester si l'installation est réussie, il faut lancer Kibana
 \begin{lstlisting}[language=bash]
-sudo -i service kibana start
+sudo  service kibana start
 \end{lstlisting}
 Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement de Kibana est contrôlable à l'adresse \verb,localhost:5601,.
 
@@ -808,7 +813,7 @@ La figure \ref{f-kibanaInstalled} montre une installation complète et réussie.
 \end{figure}
 L'application s'arrête également grâce à la commande \verb,service,.
 \begin{lstlisting}[language=bash]
-sudo -i service kibana stop
+sudo service kibana stop
 \end{lstlisting}
 
 \subsubsection{Logstash}
@@ -874,6 +879,110 @@ Filebeat s'arrête avec une commande similaire.
 sudo service filebeat stop
 \end{lstlisting}
 
+\subsection{Configuration de la Suite Elastic}
+Il est nécessaire de configurer les logiciels Logstash et Filebeat, afin que leurs entrées et sorties regardent les bonnes adresses. Pour Logstash, il faudra également configurer les éventuels filtres utilisés pour parser le contenu des logs.
+
+\subsubsection{Logstash}
+La configuration de Logstash se fait dans un fichier \verb,.conf, situé dans le répertoire \verb,/etc/logstash/conf.d/,, pour les installations Linux. Le fichier peut avoir n'importe quel nom, tant qu'il porte l'extension \verb,.conf,.
+
+Le fichier de configuration de Logstash est divisé en trois parties :
+\begin{enumerate}
+    \item input
+    \subitem Cette première partie permet de configurer l'arrivée des logs. Il est possible d'y configurer un agent Beat, ce qui nous concernera ici, mais également la lecture directe d'un fichier, ou de beaucoup d'autres sources, comme Twitter, JDBC, etc.
+    \item filter
+    \subitem La partie filtre permet quant à elle de parser les logs. Il existe là aussi beaucoup de filtres différents. Nous utiliserons une structure \verb,grok, qui permet de parser des événements non structurés.
+    \item output
+    \subitem La sortie sert à choisir où Logstash enverra ses logs traités. En général, il s'agit d'Elasticsearch.
+\end{enumerate}
+
+Pour la configuration de l'entrée, nous allons simplement écouter un agent Beat sur un port donné, le 5044.
+\begin{lstlisting}[language=bash]
+input {
+    beats {
+        port => 5044
+    }
+}
+\end{lstlisting}
+En ce qui concerne le filtre, nous allons parser les logs envoyés par le logiciel de simulation de GridEye. Le format des logs est défini par la ligne suivante :
+\begin{lstlisting}
+%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{100} -> %msg%n
+\end{lstlisting}
+Le site \verb,grokconstructor, \cite{noauthor_test_nodate} permet de créer des \verb,grok pattern, de façon incrémentale. Il suffit de lui donner quelques lignes de logs générés par notre application et de le configurer. Il va ensuite nous proposer des motifs qu'il détecte dans les lignes de logs données. Voici le résultats après lui avoir donné quelques lignes générés par le simulateur :
+\begin{lstlisting}
+\A%{TIMESTAMP_ISO8601}%{SPACE}%{LOGLEVEL}%{SPACE}%{JAVACLASS} -> %{JAVALOGMESSAGE}
+\end{lstlisting}
+À savoir que le tout premier champ, qui a été défini comme un \verb,TIMESTAMP_ISO8601,, n'en est pas vraiment un \cite{noauthor_iso_2020}. Mais c'est le motif qui correspond le mieux à notre format de date-heure.
+Il reste à définir des labels décrivant les différents motifs. Ces labels seront utilisés par Kibana.
+\begin{lstlisting}
+\A%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:message}
+\end{lstlisting}
+Etant donné que ce \verb,grok pattern, suffit pour parser nos logs, il n'y aura rien d'autre dans la section filtre de la configuration.
+\begin{lstlisting}[language=bash]
+filter { 
+    grok { 
+        match => {"message" => "%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:log_message}"}
+    }
+}
+\end{lstlisting}
+Pour finir, la partie sortie défini uniquement l'adresse et le port de notre instance Elasticsearch.
+\begin{lstlisting}[language=bash]
+output {
+    elasticsearch {
+        hosts => ["localhost:9200"]
+    }
+}
+\end{lstlisting}
+Le fichier complet \verb,logstash.conf, est disponible dans l'annexe \ref{appendix:logstashConf}.
+
+\subsubsection{Filebeat}
+La configuration de Filebeat se fait également dans un fichier \verb,YAML,, qui se nomme \verb,filebeat.yml,, et qui se situe dans le répertoire \verb,/etc/filebeat/,. De base, le fichier contient un exemple de fichier de configuration. Il y a un grand nombre de paramètres de configuration disponibles. Dans le cas de notre utilisation, il n'y a que deux paramètres à configurer : l'entrée à lire ainsi que la sortie.
+Pour l'entrée, il suffit de faire pointer le paramètre vers le fichier dans lequel le simulateur GridEye écrit ses logs.
+\begin{lstlisting}[language=bash]
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - <REPOSITORY>/GridEye_Simulator.log
+\end{lstlisting}
+Il faut remplacer \verb,<REPOSITORY>, par la localisation du répertoire contenant le fichier de log.
+Pour la sortie, on va informer l'adresse de l'instance de Logstash configuré plus tôt.
+\begin{lstlisting}[language=bash]
+output.logstash:
+  hosts: ["<IP>:5044"]
+\end{lstlisting}
+Il faut remplacer \verb,<IP>, par l'adresse IP de la machine hébergeant Logstash.
+Le fichier complet \verb,filebeat.yml, est disponible dans l'annexe \ref{appendix:filebeatConf}.
+
+\subsection{Lancement et test de la Suite Elastic complète}
+Maintenant que toutes les applications de la Suite Elastic sont installées et configurées, il ne reste plus qu'à tester le tout. Pour ce faire, sur la machine côté serveur, il faut lancer Elasticsearch, Kibana et Logstash.
+\begin{lstlisting}[language=bash]
+sudo service elasticsearch start
+sudo service kibana start
+sudo systemctl start logstash.service
+\end{lstlisting}
+
+Sur la machine côté client, les applications à lancer sont le simulateur GridEye, puis Filebeat. Pour le lancement du simulateur, il faut se situer dans le répertoire contenant le fichier \verb,pom.xml,.
+\begin{lstlisting}
+mvn clean verify && java -Xmx10g -jar target/grideye-service-log-generator-1.0.0-SNAPSHOT.jar
+sudo service filebeat start
+\end{lstlisting}
+
+À partir de là, les logs vont commencer à arriver dans Elasticsearch. Afin de les visualiser dans Kibana, il est nécessaire de créer un \verb,Index Pattern,. Cet outil est disponible dans \verb,Management, $\rightarrow$ \verb,Kibana, $\rightarrow$ \verb,Index Patterns, $\rightarrow$ \verb,Create index pattern,. Le nom du motif doit commencer par les mêmes lettres que l'index stocké dans Elasticsearch. Dans notre cas, on peut donc l'appeler simplement \verb,logstash,.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/kib_create_index_pattern.png}
+    \caption{Création de l'index pattern dans Kibana}
+    \label{f-kibCreateIndexPattern}
+\end{figure}
+Une fois créé, on peut voir les logs dans l'onglet \verb,Discover, de Kibana. Il est également possible d'afficher uniquement les champs qui nous intéressent, comme ceux créés dans le filtre.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/kib_logs_arrived.png}
+    \caption{Affichage des logs parsés dans Kibana}
+    \label{f-kibLogsArrived}
+\end{figure}
+
+
 \newpage
 
 \thispagestyle{empty}
@@ -892,7 +1001,27 @@ sudo service filebeat stop
 \listoffigures
 \newpage
 
-\section{Bibliographie}
+\printbibliography
+
+\newpage
+
+\section{Fichiers}
+
+\subsection{logstash.conf}
+\label{appendix:logstashConf}
+\lstinputlisting[language=bash]{files/logstash.conf}
+
+\subsection{filebeat.yml}
+\label{appendix:filebeatConf}
+\lstinputlisting[language=bash]{files/filebeat.yml}
+Remplacer \verb,<REPOSITORY>, par la localisation du répertoire contenant le fichier de logs.\\
+Remplacer \verb,<IP>, par l'adresse IP de la machine sur laquelle Logstash tourne.
+
+
+\newpage
+
+
+
 \section{Détails des tests}
 
 \subsection{Tests de débit d'ingestion}
@@ -1028,6 +1157,9 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
     J'ai continué le rapport. J'y ai ajouté une conclusion finale à l'évaluation. J'ai ensuite eu une réunion avec Pascal, Jonathan et Nastaran. Je leur ai présenté les résultats de mon évaluation et nous avons convenu ensemble d'effectuer l'implémentation du cas d'utilisation avec le système Elastic Stack.
 \subsection{Mercredi 6 mai}
     J'ai pris en main le programme de Jonathan qui simule l'infrastructure GridEye de façon minimale. Je l'ai modifié légérement pour qu'il stocke les logs dans un fichier, plutôt que de les afficher dans la console. J'ai ensuite commencé à rédiger la partie implémentation du cas d'utilisation dans le rapport, tout en testant les commandes que je met dans le rapport sur une installation neuve d'Ubuntu.
-    
+\subsection{Jeudi 7 mai}
+    J'ai continué la rédaction et là réalisation de l'implémentation du use case. J'ai rédigé les parties installations de la Suite Elastic, Configuration de la Suite Elastic.
+\subsection{Vendredi 8 mai}
+    J'ai continué la rédaction et la réalisation de l'implémentation du use case. J'ai maintenant un pipeline entier qui fonctionne avec le simulateur GridEye. J'ai également décrit tout cela dans le rapport. J'ai complété la bibliographie.
 
 \end{document}

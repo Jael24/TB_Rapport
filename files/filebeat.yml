@@ -1,0 +1,9 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - <REPOSITORY>/GridEye_Simulator.log
+
+
+output.logstash:
+  hosts: ["<IP>:5044"]
