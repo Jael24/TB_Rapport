@@ -734,7 +734,7 @@ En conclusion, il est difficile de faire un choix entre les deux systèmes Grayl
 
 \section{Implémentation du cas d'utilisation}
 
-\subsection{Installation de la Suite Elastic}
+\subsection{Installation de la Suite Elastic} \label{installationElasticStack}
 
 Lors de l'installation de la Suite Elastic, il est important (et obligatoire) d'avoir la même version pour tous les composants. P. ex. dans le cas présent, la version 7.6.2 est utilisée. On aura donc Elasticsearch 7.6.2, Logstash 7.6.2, etc.
 L'installation doit également suivre un ordre particulier :
@@ -953,7 +953,7 @@ output.logstash:
 Il faut remplacer \verb,<IP>, par l'adresse IP de la machine hébergeant Logstash.
 Le fichier complet \verb,filebeat.yml, est disponible dans l'annexe \ref{appendix:filebeatConf}.
 
-\subsection{Lancement et test de la Suite Elastic complète}
+\subsection{Lancement et test de la Suite Elastic}
 Maintenant que toutes les applications de la Suite Elastic sont installées et configurées, il ne reste plus qu'à tester le tout. Pour ce faire, sur la machine côté serveur, il faut lancer Elasticsearch, Kibana et Logstash.
 \begin{lstlisting}[language=bash]
 sudo service elasticsearch start
@@ -981,6 +981,17 @@ Une fois créé, on peut voir les logs dans l'onglet \verb,Discover, de Kibana. 
     \caption{Affichage des logs parsés dans Kibana}
     \label{f-kibLogsArrived}
 \end{figure}
+
+\subsection{La Suite Elastic avec Docker}
+Afin de faciliter les étapes d'installation, de configuration et de lancement de la Suite Elastic, une version \og dockerisée \fg des différents logiciels est une solution idéale. Elle permet également d'uniformiser ces étapes-ci. En effet, l'installation des applications de la Suite Elastic telle que décrit à la section \ref{installationElasticStack} fonctionnera sur un système Ubuntu, voire Linux, mais pas sur un système d'exploitation Microsoft Windows par exemple. L'utilisation de conteneurs comble ces problèmes.
+Le schéma \ref{f-dockerTopology} montre la topologie Docker prévue permettant de faire fonctionner ensemble les différents outils de la Suite Elastic.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{img/docker_topology.png}
+    \caption{Architecture de l'implémentation du use-case}
+    \label{f-dockerTopology}
+\end{figure}
+
 
 
 \newpage
@@ -1161,5 +1172,7 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
     J'ai continué la rédaction et là réalisation de l'implémentation du use case. J'ai rédigé les parties installations de la Suite Elastic, Configuration de la Suite Elastic.
 \subsection{Vendredi 8 mai}
     J'ai continué la rédaction et la réalisation de l'implémentation du use case. J'ai maintenant un pipeline entier qui fonctionne avec le simulateur GridEye. J'ai également décrit tout cela dans le rapport. J'ai complété la bibliographie.
+\subsection{Mercredi 13 mai}
+    Je me suis lancé dans la dockerisation de la Suite Elastic. J'ai commencé par le faire avec 3 images Docker séparée, que je lançais avec un docker run, comme indiqué dans la documentation. Cela fonctionnait bien avec Elasticsearch et Kibana, mais Logstash n'arrivait pas à communiquer avec Elasticsearch. J'ai remarqué que ceci était dû à la séparation des conteneurs effectuée par Docker. En effet, il n'était pas possible pour Logstash d'atteindre Elasticsearch avec l'adresse localhost, car pour le conteneur Logstash, il n'y a que lui sur \og son \fg localhost. J'ai donc décidé de passer à une topologie avec un docker-compose. Ayant plus d'expérience avec les configurations docker-compose que les simples commandes docker, je pouvais plus facilement créer les liens entre les différentes applications. J'ai donc créé une topologie faisant communiquer toutes les applications de la Suite Elastic. J'ai ensuite rédigé mon rapport et j'y ai inclus un schéma montrant cette topologie.
 
 \end{document}
