@@ -26,6 +26,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage{listings}           % Source code formatting and highlighting
+    \lstdefinestyle{ascii-tree}{% Tree command Linux
+        literate={├}{|}1 {─}{--}1 {└}{+}1 
+    }
 \usepackage{float}              % Positioning of figures
 \usepackage{xcolor}             % Color in code blocks
 \usepackage[toc,page]{appendix} % Reference to appendix
@@ -882,7 +885,7 @@ sudo service filebeat stop
 \subsection{Configuration de la Suite Elastic}
 Il est nécessaire de configurer les logiciels Logstash et Filebeat, afin que leurs entrées et sorties regardent les bonnes adresses. Pour Logstash, il faudra également configurer les éventuels filtres utilisés pour parser le contenu des logs.
 
-\subsubsection{Logstash}
+\subsubsection{Logstash} \label{configureLogstash}
 La configuration de Logstash se fait dans un fichier \verb,.conf, situé dans le répertoire \verb,/etc/logstash/conf.d/,, pour les installations Linux. Le fichier peut avoir n'importe quel nom, tant qu'il porte l'extension \verb,.conf,.
 
 Le fichier de configuration de Logstash est divisé en trois parties :
@@ -953,7 +956,7 @@ output.logstash:
 Il faut remplacer \verb,<IP>, par l'adresse IP de la machine hébergeant Logstash.
 Le fichier complet \verb,filebeat.yml, est disponible dans l'annexe \ref{appendix:filebeatConf}.
 
-\subsection{Lancement et test de la Suite Elastic}
+\subsection{Lancement et test de la Suite Elastic} \label{ss-lancementTestsElastic}
 Maintenant que toutes les applications de la Suite Elastic sont installées et configurées, il ne reste plus qu'à tester le tout. Pour ce faire, sur la machine côté serveur, il faut lancer Elasticsearch, Kibana et Logstash.
 \begin{lstlisting}[language=bash]
 sudo service elasticsearch start
@@ -984,14 +987,117 @@ Une fois créé, on peut voir les logs dans l'onglet \verb,Discover, de Kibana. 
 
 \subsection{La Suite Elastic avec Docker}
 Afin de faciliter les étapes d'installation, de configuration et de lancement de la Suite Elastic, une version \og dockerisée \fg des différents logiciels est une solution idéale. Elle permet également d'uniformiser ces étapes-ci. En effet, l'installation des applications de la Suite Elastic telle que décrit à la section \ref{installationElasticStack} fonctionnera sur un système Ubuntu, voire Linux, mais pas sur un système d'exploitation Microsoft Windows par exemple. L'utilisation de conteneurs comble ces problèmes.
-Le schéma \ref{f-dockerTopology} montre la topologie Docker prévue permettant de faire fonctionner ensemble les différents outils de la Suite Elastic.
+\subsubsection{Machine hôte de \og ELK \fg}
+Par \og ELK \fg, qui est l'ancien nom de la Suite Elastic, on parle des trois outils Logstash, Elasticsearch et Kibana. C'est la machine qui ne sera pas sur le terrain et qui permettra l'agrégation, le stockage et l'analyse des logs, entre autres.
+La figure \ref{f-dockerTopology} montre un schéma de la topologie Docker prévue permettant de faire fonctionner ensemble les différents outils de la Suite Elastic.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=15cm]{img/docker_topology.png}
-    \caption{Architecture de l'implémentation du use-case}
+    \includegraphics[width=11cm]{img/ElasticStack_docker_topology.png}
+    \caption{Architecture de l'implémentation du use-case - côté \og ELK \fg}
     \label{f-dockerTopology}
 \end{figure}
 
+Comme il y a plusieurs conteneur Docker devant être créés, nous allons utiliser l'outil \verb,docker-compose, qui permet de gérer et d'orchestrer de multiple conteneurs. Nous aurons trois images à aller télécharger : Logstash, Elasticsearch et Kibana. L'agent Beat se situant sur un ordinateur distant, il n'est pas inclus dans cette topologie. La figure \ref{f-treeDocker} montre l'arborescence des dossiers et fichiers nécessaires.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=7cm]{img/screenshots/tree_docker.png}
+    \caption{Arborescence de la topologie Docker - côté ELK}
+    \label{f-treeDocker}
+\end{figure}
+Les \verb,Dockerfile, des images Elasticsearch et Kibana sont très simples, ils vont simplement télécharger les images correspondantes depuis le \verb,Elastic Docker registry,.\\
+\verb,Dockerfile, d'Elasticsearch :
+\begin{lstlisting}
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+\end{lstlisting}
+\verb,Dockerfile, de Kibana :
+\begin{lstlisting}
+FROM docker.elastic.co/kibana/kibana:7.6.2
+\end{lstlisting}
+
+Pour l'image de Logstash, il y aura deux fichiers de configurations. Un pour le \og pipeline \fg, qui contiendra les entrées, filtres et sorties décrites à la section \ref{configureLogstash}, et un pour les paramètres de l'outil. \\
+Fichier de configuration des paramètres (\verb,logstash.yml,) :
+\begin{lstlisting}
+http.host: "0.0.0.0"
+xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+\end{lstlisting}
+Le fichier de configuration du pipeline est donc le même que pour l'installation sans Docker. Il est disponible à l'annexe \ref{appendix:logstashConf}.
+Le \verb,Dockerfile, de Logstash télécharge l'image, puis ajoute les fichiers de configuration au système de fichier du conteneur.
+\begin{lstlisting}
+FROM docker.elastic.co/logstash/logstash:7.6.2
+RUN rm -f /usr/share/logstash/pipeline/logstash.conf
+ADD pipeline/ /usr/share/logstash/pipeline/
+ADD config/ /usr/share/logstash/config/
+\end{lstlisting}
+
+Pour finir, le fichier \verb,docker-compose.yml, organise toute la topologie. Il lancera d'abord Elasticsearch, puis Kibana, et enfin Logstash. Les ports par défaut des différents logiciels seront exposés, afin d'être accessible depuis l'extérieur. Ceci est nécessaire pour permettre la communication entre les différents conteneurs.
+\lstinputlisting{files/docker-compose_impl_usecase.yml}
+Un répertoire GitHub \cite{jael24_jael24tb_elasticstack_2020} contient toute l'architecture décrite.
+
+Pour lancer le déploiement de la Suite Elastic, il suffit de lancer la commande \verb,docker-compose up --build -d, à l'endroit où se situe le fichier \verb,docker-compose.yml,. Dans ce cas-ci, le dossier \verb,topology,.
+Pour tester si tout le déploiement s'est bien déroulé, les mêmes étapes que celles du paragraphe \ref{ss-lancementTestsElastic}, à partir de la partie côté \og client \fg, peuvent être appliquées.
+
+\subsubsection{Machine \og terrain \fg}
+La machine sur le terrain contiendra les agents Beat nécessaires, ainsi que les programmes et applications générant les logs. Il y aura également une base de données contenant des données arbitraires. La figure \ref{f-dockerFieldTopology} montre l'architecture définie pour l'implémentation du use-case sur la machine \og terrain \fg.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/Beat_docker_topology.png}
+    \caption{Architecture de l'implémentation du use-case - côté terrain}
+    \label{f-dockerFieldTopology}
+\end{figure}
+
+Il y aura donc le simulateur GridEye générant les logs, un agent Filebeat qui va lire les logs applicatifs et les envoyer à la Suite Elastic (les logs seront partagés entre les deux conteneur via un Volume Docker, qui sera lié à un chemin sur la machine hôte), un agent Metricbeat qui va surveiller le système hôte ainsi que la base de données. L'agent Metricbeat contiendra également le module de monitoring de Docker, qui nécessite un Volume Docker permettant l'accès au \og Daemon Docker \fg. Il enverra finalement les logs vers la machine hôte ELK. Pour finir, il y aura la base de donnée, qui sera un système de gestion de bases de données relationnelle (SGBDR) PostgreSQL.
+Comme pour la machine contenant les outils \og ELK \fg, nous allons travailler avec un \verb,docker-compose,, qui permettra d'orchestrer tous les conteneurs. La figure \ref{f-treeDockerField} montre l'arborescence des dossiers et fichiers contenant les images Docker ainsi que le fichier \verb,docker-compose.yml,. Cette arborescence reprend les mêmes bases que celle du côté ELK.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/tree_docker_field.png}
+    \caption{Arborescence de la topologie Docker - côté terrain}
+    \label{f-treeDockerField}
+\end{figure}
+
+Les images \verb,filebeat, et \verb,metricbeat, ont la même structure. Un \verb,Dockerfile, qui télécharge l'image correspondante depuis le \verb,Elastic Docker registry,, puis qui copie le fichier de configuration de l'agent, respectivement \verb,filebeat.yml,, et \verb,metricbeat.yml,.
+
+\verb,Dockerfile, de filebeat
+\begin{lstlisting}
+FROM docker.elastic.co/beats/filebeat:7.6.2
+COPY config/filebeat.yml /usr/share/filebeat/filebeat.yml
+USER root
+RUN chown root:filebeat /usr/share/filebeat/filebeat.yml
+USER filebeat
+\end{lstlisting}
+
+\verb,Dockerfile, de metricbeat
+\begin{lstlisting}
+FROM docker.elastic.co/beats/metricbeat:7.6.2
+COPY config/metricbeat.yml /usr/share/metricbeat/metricbeat.yml
+USER root
+RUN chown root:metricbeat /usr/share/metricbeat/metricbeat.yml
+\end{lstlisting}
+
+Les fichiers de configuration des deux agents sont disponibles aux annexes \ref{appendix:filebeatConfDockerUC} (filebeat) et \ref{appendix:metricbeatConfDockerUC} (metricbeat).
+
+L'image du simulateur de la plateforme GridEye contient elle un \verb,Dockerfile, qui va lancer une application Java depuis un fichier \verb,jar,. Cette manière de lancer une application Java dockerisée est la plus simple pour ce cas présent (le fichier compilé ne change jamais car il n'y a pas de mise à jour du programme). Il y a également un dossiers \verb,logs, qui contiendra le fichier de log et sera donc la base du Volume Docker partagé avec l'agent filebeat.
+
+\verb,Dockerfile, du simulateur GridEye
+\begin{lstlisting}
+FROM openjdk:8-jdk-alpine
+
+COPY app/grideye-service-log-generator-1.0.0-SNAPSHOT.jar grideye_sim.jar
+CMD java -jar grideye_sim.jar
+\end{lstlisting}
+
+Finalement, le dossier de l'image de la base de données PostgreSQL est également simple. On va simplement télécharger l'image, puis copier le fichier \verb,sql, qui permettra de peupler la base de données avec des informations arbitraires (en l'occurrence, des informations sur des pays et des villes).
+
+\verb,Dockerfile, de la base de données
+\begin{lstlisting}
+FROM postgres:12.1
+COPY data/world.sql /docker-entrypoint-initdb.d/10-init.sql
+\end{lstlisting}
+
+Pour ce qui est du docker-compose, disponible à l'annexe \ref{appendix:dockercomposeFieldUC}, il contient les quatre services correspondant aux quatre conteneurs Docker. Les services filebeat et grideye\_simulator partagent un Volume Docker, alors que metricbeat possède également un Volume Docker qui pointe sur le fichier \verb,docker.sock,, permettant de gérer Docker depuis un conteneur.
+
+Afin de tester l'installation de la partie terrain, il suffit de lancer la commande \verb,docker-compose up --build -d, à l’endroit où se situe le fichier \verb,docker-compose.yml,. Dans ce cas-ci, le dossier \verb,topology,. Si tout s'est bien installé, des logs devraient arriver rapidement à l'adresse indiqué dans les fichiers de configurations, si la Suite Elastic y est bien lancée.
 
 
 \newpage
@@ -1028,6 +1134,18 @@ Le schéma \ref{f-dockerTopology} montre la topologie Docker prévue permettant 
 Remplacer \verb,<REPOSITORY>, par la localisation du répertoire contenant le fichier de logs.\\
 Remplacer \verb,<IP>, par l'adresse IP de la machine sur laquelle Logstash tourne.
 
+\subsection{filebeat.yml de l'image Docker pour l'implémentation du cas d'utilisation}
+\label{appendix:filebeatConfDockerUC}
+\lstinputlisting[language=bash]{files/filebeat_docker_UC.yml}
+
+\subsection{metricbeat.yml de l'image Docker pour l'implémentation du cas d'utilisation}
+\label{appendix:metricbeatConfDockerUC}
+\lstinputlisting[language=bash]{files/metricbeat_docker_UC.yml}
+
+\subsection{docker-compose.yml du côté terrain pour l'implémentation du cas d'utilisation}
+\label{appendix:dockercomposeFieldUC}
+\lstinputlisting[language=bash]{files/docker-compose_field_UC.yml}
+Remplacer \verb,<DOCKER_FIELD_PATH>, par la localisation du répertoire contenant l'arborescence de la machine \og terrain \fg.\\
 
 \newpage
 
@@ -1174,5 +1292,16 @@ Débit moyen : \textasciitilde 46'295,14 EPS \\
     J'ai continué la rédaction et la réalisation de l'implémentation du use case. J'ai maintenant un pipeline entier qui fonctionne avec le simulateur GridEye. J'ai également décrit tout cela dans le rapport. J'ai complété la bibliographie.
 \subsection{Mercredi 13 mai}
     Je me suis lancé dans la dockerisation de la Suite Elastic. J'ai commencé par le faire avec 3 images Docker séparée, que je lançais avec un docker run, comme indiqué dans la documentation. Cela fonctionnait bien avec Elasticsearch et Kibana, mais Logstash n'arrivait pas à communiquer avec Elasticsearch. J'ai remarqué que ceci était dû à la séparation des conteneurs effectuée par Docker. En effet, il n'était pas possible pour Logstash d'atteindre Elasticsearch avec l'adresse localhost, car pour le conteneur Logstash, il n'y a que lui sur \og son \fg localhost. J'ai donc décidé de passer à une topologie avec un docker-compose. Ayant plus d'expérience avec les configurations docker-compose que les simples commandes docker, je pouvais plus facilement créer les liens entre les différentes applications. J'ai donc créé une topologie faisant communiquer toutes les applications de la Suite Elastic. J'ai ensuite rédigé mon rapport et j'y ai inclus un schéma montrant cette topologie.
-
+\subsection{Jeudi 14 mai}
+    J'ai continué le rapport avec la partie ELK et l'installation avec Docker et docker-compose. J'ai ensuite commencé à faire un schéma similaire pour la partie terrain, qui est un peu plus complexe. J'ai envoyé une première idée du schéma à Depsys et Nastaran ainsi que mes questions, comme le rôle de la base de donnée PostgreSQL dans cette architecture. J'ai également eu une réunion avec Nastaran.
+\subsection{Mercredi 20 mai}
+    Après avoir reçu des réponses sur mes questions ainsi que l'approbation de Pascal quant à mon schéma. Je me suis lancé dans la réalisation de la topologie du côté terrain. J'ai décidé de construire mon conteneur docker contenant l'application Java du simulateur GridEye à partir d'un fichier \verb,.jar,. J'ai eu quelques problèmes avec le fichier de logs dans lequel le simulateur doit écrire ses logs, et l'agent filebeat lire. Je rapidement compris qu'il me fallait là un Volume Docker partagé entre les deux conteneurs.
+\subsection{Jeudi 21 mai}
+    Je me suis renseigné sur les Volume Docker et leur intégration avec docker-compose. J'en ai donc intégré dans mon architecture pour partager le fichier de logs entre le simulateur GridEye et Filebeat. J'ai continué la réalisation de la topologie côté terrain avec l'intégration de Metricbeat et PostgreSQL.
+\subsection{Mercredi 27 mai}
+    En vue de la réunion du 28 mai, qui a pour but de présenter mes avancées dans l'implémentation du cas d'utilisation, j'ai terminé la topologie docker du côté terrain, et ait tout fait fonctionné ensemble (terrain et ELK). J'ai aussi commencer à créer mes premières visualisations et tableau de bord (dashboard) dans Kibana. J'ai également avancé le rapport.
+\subsection{Jeudi 28 mai}
+    J'ai tenté de lancer un deuxième \og device terrain \fg à l'aide d'une machine virtuelle. Le test s'est bien passé. J'ai ensuite préparé ma présentation, et fait ma présenation à Jonathan, Pascal et Nastaran. Lors de cette réunion, DEPsys était globalement content de l'avancée et de l'architecture mise en place, qui correspondait à leurs attentes. Les prochaines étapes pour le cas d'utilisation étaient principalement situées dans le dashboard de Kibana, afin de créer, par exemple, un dashboard des problèmes, permettant à un opérateur de voir rapidement si une anomalie est présente, ou a été présente, dans le système.
+\subsection{Jeudi 4 juin}
+    J'ai avancé le rapport, dans lequel j'avais pris un peu de retard suite aux nombreuses implémentations pour le cas d'utilisation.
 \end{document}

@@ -1,0 +1,9 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+            - /usr/share/filebeat/logs/GridEye_sim.log
+  
+  
+output.logstash:
+  hosts: ["192.168.1.119:5044"]

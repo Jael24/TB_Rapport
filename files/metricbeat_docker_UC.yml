@@ -1,0 +1,36 @@
+metricbeat.modules:
+- module: system
+  metricsets: ["cpu","memory"]
+  enabled: false
+  period: 10s
+  processes: ['.*']
+
+  cpu.metrics:  ["percentages","normalized_percentages"]
+  core.metrics: ["percentages"]
+
+- module: postgresql
+  enabled: false
+  period: 10s
+  metricsets: ["database"]
+  hosts: ["postgres://postgres:5432?sslmode=disable"]
+  username: postgres
+  password: postgres
+
+metricbeat.modules:
+- module: docker
+  metricsets:
+    - "container"
+    - "cpu"
+    #- "diskio"
+    - "event"
+    #- "healthcheck"
+    - "info"
+    #- "image"
+    - "memory"
+    - "network"
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s
+  enabled: true
+
+output.logstash:
+  hosts: ["192.168.1.119:5045"]

@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+
+  grideye_simulator:
+    container_name: grideye_sim
+    build: ../images/GridEye_Simulator
+    restart: on-failure
+    ports:
+      - 2404:2404
+    volumes:
+      - applicativeLogs:/logs
+
+  filebeat:
+    container_name: fbeat
+    build: ../images/filebeat
+    volumes:
+      - applicativeLogs:/usr/share/filebeat/logs
+
+  metricbeat:
+    container_name: mbeat
+    build: ../images/metricbeat
+    depends_on:
+      - db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # Non-persistant DB
+  db:
+    container_name: postgres
+    build: ../images/postgresql
+    ports:
+      - 5432:5432
+
+
+volumes:
+  applicativeLogs:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '<DOCKER_FIELD_PATH>/images/GridEye_Simulator/logs'
