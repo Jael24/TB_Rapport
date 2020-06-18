@@ -195,6 +195,22 @@ Technologies:
 % Document start ====================================================
 
 \section{Introduction}
+
+La plateforme GridEye de DEPsys \cite{noauthor_depsys_nodate} est une solution permettant d'optimiser les réseaux électriques. Elle s'adresse aux gestionnaires de réseau de distribution, et permet de faire face aux contraintes de la production décentralisée, qui correspondent par exemple aux panneaux photovoltaïques, ou encore aux batteries de stockage. Autant d'équipements que de plus en plus de particulier se procurent, tout comme des entreprises. Cette transition énergétique est accélérée en Suisse avec la \og Stratégie Energétique 2050 \fg, un texte de loi accepté par le peuple en 2017, qui promeut les énergies renouvelables.
+
+GridEye permet une optimisation efficace du réseau grâce à plusieurs applications, ayant principalement pour but d'assurer une grande qualité et une haute fiabilité. Ces qualités sont atteintes avec des outils de surveillance du réseau, d'analyses des événements via des algorithmes sophistiqués, et d'autres fonctionnalités diverses. Le service de GridEye fourni également l'accès à tout un support hautement qualifié. La figure \ref{f-GridEyeDescription} montre les différentes applications de GridEye, ainsi que ses composants et services.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/GridEye.png}
+    \caption{Description de la plateforme GridEye \cite{noauthor_depsys_nodate}}
+    \label{f-GridEyeDescription}
+\end{figure}
+
+Ce Travail de Bachelor se positionne dans les applications d'analyse et de surveillance du réseau électrique. Le but est, à terme, de remplacer la solution actuelle par un système de gestion de logs.
+
+\newpage
+
 \section{Évaluation}
 
 \subsection{Critères d'évaluation}
@@ -207,7 +223,7 @@ Pour réaliser une évaluation de différents système de gestion de log, il fau
 \item L'agrégation centralisée des logs
 \subitem L'agrégation des logs est un défi, car après avoir collecté les logs, il faut tous les regrouper dans un même endroit, alors qu'ils peuvent avoir des formats différents. De plus, ils peuvent être généré très rapidement (s'exprime en EPS, Event Per Second), il faut donc être capable de traiter et regrouper ces logs de manière efficace.\\
 \item Le stockage à long terme et la durée de rétention des logs
-\subitem Après avoir agrégé ces informations, il faut maintenant faire des choix quant à leur stockage. L'idéal serait de garder tous les logs indéfiniment, mais chaque information stockée à un coût. Il faut donc avoir une stratégie de rétention qui permette de supprimer ou garder tel type de log.\\
+\subitem Après avoir agrégé ces informations, il faut maintenant faire des choix quant à leur stockage. L'idéal serait de garder tous les logs indéfiniment, mais chaque information stockée a un coût. Il faut donc avoir une stratégie de rétention qui permette de supprimer ou garder tel type de log.\\
 \item La rotation des fichiers de logs
 \subitem La rotation consiste à rendre automatique la stratégie de rétention et/ou de stockage des logs.\\
 \item L'analyse des logs (en temps réel et en vrac après une période de stockage)
@@ -220,12 +236,12 @@ Pour réaliser une évaluation de différents système de gestion de log, il fau
 \subitem Voici un critère qui change en permanence, mais qui a son importance lors d'un choix d'outil informatique. En effet, un logiciel sur le déclin sera de plus en plus dur à supporter, alors qu'un outil trop jeune n'a souvent que trop peu d'utilisateurs qui pourraient partager leurs connaissances sur les forums. L'idéal étant donc un logiciel populaire et qui est en pleine croissance.
 \end{itemize}
 
-En plus de ces critères, les coûts d'utilisation seront évalués.\\
+En plus de ces critères, les coûts d'utilisation seront, si possible, évalués.\\
 
 \subsection{Choix des différents systèmes à évaluer}
 
-Comme pour le choix des critères d'évaluation, les différents systèmes qui vont être analysés ont été définis soit par DEPsys, soit par des recherches dans les nombreux classement de \og Log Management Tools \fg disponible sur internet.\\
-Quatre classements différents ont été sélectionnés afin d'avoir plusieurs avis différents, tout en restant dans une quantité raisonnable d'analyses. Les classements qui allaient être utilisés devaient être neutre. On entend par là que le site réalisant le classement ne doit pas proposer, par exemple, une solution cloud utilisant un certain outil de gestion de log, auquel cas son classement serait forcément biaisé. Il fallait également que le classement soi récent, étant donné la vitesse d'évolution générale des outils informatiques. Une période d'un an maximum a été définie.\\\\
+Comme pour le choix des critères d'évaluation, les différents systèmes qui vont être analysés ont été définis soit par DEPsys, soit par des recherches dans les nombreux classement de \og Log Management Tools \fg disponibles sur internet.\\
+Quatre classements différents ont été sélectionnés afin d'avoir plusieurs avis différents, tout en restant dans une quantité raisonnable d'analyses. Les classements qui allaient être utilisés devaient être neutres. On entend par là que le site réalisant le classement ne doit pas proposer, par exemple, une solution cloud utilisant un certain outil de gestion de log, auquel cas son classement serait forcément biaisé. Il fallait également que le classement soit récent, étant donné la vitesse d'évolution générale des outils informatiques. Une période d'un an maximum a été définie.\\\\
 Les classements suivants ont été choisis :
 \begin{itemize}
     \item Top 8 BEST Log Management Software \cite{noauthor_top_nodate}
@@ -238,11 +254,11 @@ Les classements suivants ont été choisis :
     \subitem Classement datant de août 2019, et publié par \textit{Comparitech}.
 \end{itemize}
 
-Les quatre sites internet retenus sont de simples portails informatiques, publiant des articles sur divers sujets informatiques. Lorsque l'on effectue une recherche Google afin de trouver des classements de système de gestion de logs, on tombe régulièrement sur des articles de \textit{DNSStuff} et \textit{Sematext}. Ceux-ci n'ont pas été utilisé car le premier appartient à SolarWinds, et le second propose des solutions cloud utilisant des outils de gestion de logs. Ils ont donc été jugés non-neutre.
+Les quatre sites internet retenus sont de simples portails informatiques, publiant des articles sur divers sujets informatiques. Lorsque l'on effectue une recherche Google afin de trouver des classements de système de gestion de logs, on tombe régulièrement sur des articles de \textit{DNSStuff} et \textit{Sematext}. Ceux-ci n'ont pas été utilisé car le premier appartient à SolarWinds, une entreprise proposant plusieurs logiciels, dont des systèmes de gestion de logs, et le second propose des solutions cloud utilisant des outils de gestion de logs. Ils ont donc été jugés non-neutre.
 
-Afin de réaliser un classement regroupant le contenu de ces 4 tops, une note a été attribuée à chaque position de chaque classement. Deux critères ont été intégré dans le calcul de la note : la position (mieux on est positionné dans son propre classement, plus on aura de points), ainsi que le nombre total d'outils cités. Il est en effet plus difficile d'être bien classé dans un classement contenant 5 outils que dans un classement en contenant 10. Pour finir, afin de faciliter la lecture, la note attribuée se situe entre 0 (le plus mauvais), et 100 (la meilleure note possible). La formule suivante a donc été appliquée :
+Afin de réaliser un classement regroupant le contenu de ces 4 tops, une note a été attribuée à chaque position de chaque classement. Deux critères ont été intégré dans le calcul de la note : la position (mieux on est positionné dans son propre classement, plus on aura de points), ainsi que le nombre total d'outils cités. Il est en effet plus facile d'être bien classé dans un classement contenant 5 outils que dans un classement en contenant 10. Pour finir, afin de faciliter la lecture, la note attribuée se situe entre 0 (le plus mauvais), et 100 (la meilleure note possible). La formule suivante a donc été appliquée :
 \[\frac{i * 100}{n}\]
-i étant la position dans le classement, et n le nombre total d'outil dans le classement.\\
+i étant la position dans le classement, et n le nombre total d'outils dans le classement.\\
 
 Les tableaux \ref{table-Classement1} et \ref{table-Classement2} montrent les points obtenus par chaque système.
 
@@ -297,12 +313,12 @@ Les tableaux \ref{table-Classement1} et \ref{table-Classement2} montrent les poi
      \hline
      Système & Points\\
      \hline
-     SolarWinds Log \& Event Manager & 100\\
-     PRTG Network Monitor & 83\\
-     Lepide & 67\\
-     McAfee Enterprise Log Manager & 50\\
-     Veriato & 33\\
-     Splunk & 17\\
+     SolarWinds Papertrail & 100\\
+     SolarWinds Loggly & 83\\
+     Splunk & 67\\
+     Nagios Log Server & 50\\
+     Graylog & 33\\
+     ManageEngine EventLog Analyzer & 17\\
      \hline
     \end{tabular}}
 \quad
@@ -312,7 +328,7 @@ Les tableaux \ref{table-Classement1} et \ref{table-Classement2} montrent les poi
      \hline
      Système & Points\\
      \hline
-     Solarwinds Log \& Event Manager & 100\\
+     SolarWinds Log \& Event Manager & 100\\
      PRTG Network Monitor & 83\\
      Lepide & 67\\
      McAfee Enterprise Log Manager & 50\\
@@ -341,7 +357,7 @@ Et le tableau \ref{t-classementGlobal} montre le classement global, calculé d'a
     6 & Fluentd & 102\\
     7 & SolarWinds Log Analyzer & 100\\
     8 & SolarWinds Log \& Event Manager & 100\\
-    9 & ELK Stack (Kibana + Logstash)  & 92\\
+    9 & ELK Stack (Kibana + Logstash)  & 93\\
     10 & Sematext Logs & 89\\
     11 & Graylog & 88\\
     12 & Lepide & 67\\
@@ -351,7 +367,7 @@ Et le tableau \ref{t-classementGlobal} montre le classement global, calculé d'a
     16 & Logalyze & 33\\
     17 & Veriato & 33\\
     18 & XpoLog & 25\\
-    19 & ManageEngine Syslog Forwarder & 18\\
+    19 & ManageEngine Syslog Forwarder & 17\\
     20 & Netwrix Auditor & 11\\
     21 & TekWire Managelogs & 8\\
     \hline
@@ -361,7 +377,7 @@ Et le tableau \ref{t-classementGlobal} montre le classement global, calculé d'a
 \end{table}
 \justify
 
-Avec ces résultats, on constate qu'il y a un certain nombre de systèmes appartenant à SolarWinds. Après une étude légèrement plus approfondie sur ces différents systèmes, il a été décidé de garder les suivants pour l'évaluation :
+Après une étude légèrement plus approfondie sur ces différents systèmes, il a été décidé de garder les suivants pour l'évaluation :
 
 \begin{enumerate}
     \item Elastic Stack
@@ -396,7 +412,7 @@ La table \ref{t-resumeELK} montre un résumé des fonctionnalités disponible ai
     \hline
     \multicolumn{2}{|c|}{Elastic Stack} \\
     \hline
-    Collecte & La collecte des logs se fait en approche minimaliste. La suite Elastic contient l'outil Beat, qui est donc une famille d'agent. On installe un agent beat (p. ex. FileBeat, MetricBeat, etc.) sur le système générant les logs, et cet agent envoie les données vers le le serveur.\\
+    Collecte & La collecte des logs se fait en approche minimaliste. La suite Elastic contient l'outil Beat, qui est donc une famille d'agent léger. On installe un agent beat (p. ex. Filebeat, Metricbeat, etc.) sur le système générant les logs, et cet agent envoie les données vers le serveur.\\
     \hline
     Agrégation centralisée & Se fait via Logstash. Peux supporter beaucoup d'événements par seconde (> 10'000 EPS). Compatible avec énormément de type de logs. Permet d'analyser et transformer les logs en temps réel. Logstash dispose d'une API permettant de créer nos propres plug-in, si les sources de données ne sont pas compatible nativement.\\
     \hline
@@ -431,7 +447,7 @@ Graylog un outil de gestion de logs. Il dispose de deux versions : Open Source e
     \hline
     Collecte & La collecte des logs se fait en approche minimaliste. Graylog possède un outil appelé \og Sidecar \fg qui permet de gérer plusieurs type d'agent, y compris l'outil Beat de la suite Elastic.\\
     \hline
-    Agrégation centralisée & Graylog permet de gérer \og d'énormes \fg jeux de donnée et de les traiter selon des règles définies par l'utilisateur. En plus des règles classiques, comme la géographie, le type, etc., Graylog permet de faire des listes noires de logs.\\
+    Agrégation centralisée & Graylog permet de gérer \og d'énormes \fg jeux de donnée et de les traiter selon des règles définies par l'utilisateur. En plus des règles d'agrégation classiques, comme l'origine géographique, le niveau d'alerte, etc., Graylog permet de faire des listes noires de logs.\\
     \hline
     Stockage et rétention & Le stockage se fait avec MongoDB et Elasticsearch. Graylog offre une solution (Graylog Archive) de rétention des données, disponible avec la version Enterprise, qui peut être paramétrée.\\
     \hline
@@ -455,7 +471,7 @@ Graylog un outil de gestion de logs. Il dispose de deux versions : Open Source e
 \justify
 
 \subsubsection{SolarWinds Loggly}
-SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans le cloud). Il dispose de plusieurs version, dont une gratuite. La table \ref{t-resumeLoggly} montre les fonctionnalités et des informations sur les coûts de SolarWinds Loggly.
+SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans le cloud). Il dispose de plusieurs versions, dont une gratuite. La table \ref{t-resumeLoggly} montre les fonctionnalités et des informations sur les coûts de SolarWinds Loggly.
 
 \centering
 \begin{table}[H]
@@ -465,7 +481,7 @@ SolarWinds Loggly un outil de gestion de logs SaaS (Software-as-a-Service, dans 
     \hline
     Collecte & L'envoi de données à Loggly est relativement simple. La seule contrainte est qu'il s'agisse de texte. Il n'y a pas besoin d'avoir d'agent (envoi de log via un endpoint), mais il est également possible d'en utiliser.\\
     \hline
-    Agrégation centralisée & \\
+    Agrégation centralisée & Loggly permet de parser les logs des formats les plus connus, comme les logs MySQL ou Java, mais ne possède pas d'outil permettant de réaliser un filtrage et une agrégation de logs personnalisés. Pour ce faire, il préconise d'utiliser un logiciel comme Logstash. \\
     \hline
     Stockage et rétention & La rétention des données est plutôt courte (7 jours dans la version gratuite), et ensuite, les logs peuvent être sauvegardés dans une instance S3 de AWS.\\
     \hline
@@ -510,7 +526,7 @@ Splunk peut être disponible en version \og sur site \fg ou \og cloud \fg. La ta
     \hline
     Collecte & La collecte des logs se fait en approche minimaliste. Ceci via les \og Universal Forwarder \fg qui sont des agents à installer sur le système générant les logs. Il envoie ensuite les données vers l'indexer.\\
     \hline
-    Agrégation centralisée & \\
+    Agrégation centralisée & Pour Splunk, l'agrégation des logs ne se fait pas dans le pipeline lors de l'ingestion des logs, mais après coup. Cela se fait donc une fois que les logs ont été indexés. Il est possible de faire des filtres personnalisés ainsi que d'utiliser des filtres pour les formats courants, et ceci avec une fonctionnalité s'appelant \og Field Extraction \fg.\\
     \hline
     Stockage et rétention & Le stockage des logs se fait avec l'indexer. Concernant la rétention des données, Splunk la gère avec des \og buckets \fg. Concrètement, un bucket possède une durée qui détermine le temps qu'une donnée va passer dedans. P. ex., on peut avoir un bucket de 30 jours où les logs seront accessible et analysable librement. Puis, passé ces 30 jours, ils iront dans un autre bucket où ils seront compressé pour le stockage à long terme.\\
     \hline
@@ -564,10 +580,10 @@ La figure \ref{f-Trends4Systemes} montre les courbes de tendances des quatre sys
     \label{f-Trends2Systemes}
 \end{figure}
 
-La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Suite \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
+La Suite Elastic contenant 4 logiciels séparés, le choix ici a été d'inclure uniquement \og Elasticsearch \fg, car c'est la plus connue des quatre applications, et que les résultats sont meilleurs qu'avec le terme \og Elastic Stack \fg (il faut également savoir que la suite à changé de nom en 2016, passant de \og ELK Stack \fg à \og Elastic Stack \fg, ce qui ne favorise pas la recherche dans Google Trends).
 
 \textbf{Conclusion} \\
-On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième ne que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
+On distingue deux groupes dans cette analyse : Elasticsearch et Splunk d'un côté, Graylog et Loggly de l'autre. Le premier est très populaire et en croissance, alors que le deuxième n'est que peu tendance, et Loggly n'est pas en croissance. Au sein même du groupe Graylog-Loggly, on peut encore constater une grande différence, Graylog étant beaucoup plus recherché sur Google que Loggly. On peut donc affirmer que la Suite Elastic est le système le plus populaire, devant Splunk. Loin derrière vient Graylog et encore plus loin, on trouve Loggly.
 
 \subsection{Tests réels et prise en main des logiciels}
 
@@ -668,7 +684,7 @@ La table \ref{t-testGrandeIngestion} montre \textbf{les résultats} du test d'in
 \justify
 
 \textbf{Conclusion} \\
-Ce test permet simplement de montrer que les systèmes travaillant avec un agent, soit selon la méthode PUSH, n'ont pas de problème de taille de fichier, car l'agent lit et envoie les logs au fur et à mesure. Loggly est le seul ici utilisant la méthode PULL. Au niveau des débits, ceux d'Elastic Stack et Graylog ont été divisé par 2, alors que celui de Splunk est resté stable. Pour Loggly, il n'y a pas eu de différence, étant donné qu'il est limité en taille de fichier.
+Ce test permet simplement de montrer que les systèmes travaillant avec un agent, soit selon la méthode PUSH, n'ont pas de problème de taille de fichier, car l'agent lit et envoie les logs au fur et à mesure. Loggly est le seul ici utilisant la méthode PULL. Au niveau des débits, ceux d'Elastic Stack et de Graylog ont été divisés par 2, alors que celui de Splunk est resté stable. Pour Loggly, il n'y a pas eu de différence, étant donné qu'il est limité en taille de fichier.
 
 
 \subsubsection{Test de consommation CPU}
@@ -685,7 +701,7 @@ Ce test-ci a pour but de pouvoir comparer les systèmes de gestion de logs Elast
 \end{itemize}
 
 \textbf{Résultats} \\
-La figure \ref{f-ElasticCPU} montre la consommation CPU et l'historique du trafic réseau lors de la réception des logs. La figure \ref{f-GraylogCPU} montre les mêmes informations, mais pour le système Graylog. Enfin, la figure \ref{f-FilebeatCPU} montre ces informations-ci avec l'agent Filebeat.
+La figure \ref{f-ElasticCPU} montre la consommation CPU et l'historique du trafic réseau lors de la réception des logs pour le système Elastic Stack. La figure \ref{f-GraylogCPU} montre les mêmes informations, mais pour le système Graylog. Enfin, la figure \ref{f-FilebeatCPU} montre ces informations-ci avec l'agent Filebeat.
 
 \begin{figure}[H]
     \centering
@@ -719,7 +735,7 @@ Reste la comparaison de la popularité des applications. Celle-ci a montré une 
 Globalement, l'analyse théorique des systèmes de gestion de logs ne permet pas de faire un choix concret sur un système ou un autre pour la réalisation d'une solution destinée au système GridEye. Elle permettrait tout au plus de se détacher de Loggly, qui n'est vraiment pas recommandable du point de vue de sa courbe de tendance.
 \subsubsection{Analyse pratique des systèmes}
 Le but des tests réels était de pouvoir confronter les systèmes de gestion de log au niveau de leur performance, et également de réaliser une prise en main des différents logiciels, avec tout ce que cela implique (installation, configuration, etc.). Cette deuxième partie avait également pour but d'évaluer l'utilisabilité des divers systèmes.
-Au niveau des performances, on a pu voir que le système Graylog et Elastic Stack se distinguaient légèrement avec un meilleur débit d'ingestion. Que tous les systèmes, excepté Loggly, pouvaient, grâce à leur approche minimaliste, recevoir des grandes quantités de logs.\\
+Au niveau des performances, on a pu voir que les systèmes Graylog et Elastic Stack se distinguaient légèrement avec un meilleur débit d'ingestion. Que tous les systèmes, excepté Loggly, pouvaient, grâce à leur approche minimaliste, recevoir des grandes quantités de logs.\\
 À ce point-ci de l'évaluation, un premier bilan de l'\og user-friendliness \fg des systèmes à également pu être tiré :
 \begin{itemize}
     \item SolarWinds Loggly est relativement simple d'utilisation. Sa caractéristique Cloud facilite également l'installation (il n'y en a pas, il suffit de se créer un compte et nous recevons un lien vers notre version d'essai).
@@ -731,262 +747,37 @@ Avec ces premiers tests, nous avons déjà pu écarter la solution SolarWinds Lo
 Ensuite, il y a encore eu le test d'utilisation du CPU entre la Suite Elastic et Graylog. Avec celui-ci, on pourrait donner un très léger avantage à Graylog.
 
 \subsubsection{Recommandation}
-En conclusion, il est difficile de faire un choix entre les deux systèmes Graylog et la Suite Elastic. Mais de part sa très grande popularité, amenant son lot de réponse dans les forums et autre article permettant d'accélérer le développement d'un logiciel, ainsi que de son caractère très ouvert lié à son \og architecture suite \fg, la \textbf{Suite Elastic} est le meilleur choix dans l'optique de mise en place d'une solution de gestion de logs pour l'infrastructure GridEye.
+En conclusion, il est difficile de faire un choix entre les deux systèmes Graylog et la Suite Elastic. Mais de part sa très grande popularité, amenant son lot de réponse dans les forums et autres articles permettant d'accélérer le développement d'un logiciel, ainsi que de son caractère très ouvert lié à son \og architecture suite \fg, la \textbf{Suite Elastic} est le meilleur choix dans l'optique de mise en place d'une solution de gestion de logs pour l'infrastructure GridEye.
 
 \newpage
 
 \section{Implémentation du cas d'utilisation}
 
-\subsection{Installation de la Suite Elastic} \label{installationElasticStack}
+Un cas d'utilisation à implémenter à été fourni par DEPsys et demande les éléments suivants :
 
-Lors de l'installation de la Suite Elastic, il est important (et obligatoire) d'avoir la même version pour tous les composants. P. ex. dans le cas présent, la version 7.6.2 est utilisée. On aura donc Elasticsearch 7.6.2, Logstash 7.6.2, etc.
-L'installation doit également suivre un ordre particulier :
-\begin{enumerate}
-    \item Elasticsearch
-    \item Kibana
-    \item Logstash
-    \item Beats
-\end{enumerate}
-L'installation décrite ici est réalisée sur un système Ubuntu 20.04.
-Les différentes étapes d'installation de la Suite Elastic qui vont suivre sont tirés du tutoriel officiel d'installation de la Suite Elastic \cite{noauthor_installing_nodate}.
+Le système générant les logs sera composé d'une base de donnée PostgreSQL et d'une application Java simulant différents comportements, comme une surcharge du CPU, de la RAM ou autres problèmes.
 
-\subsubsection{Elasticsearch}
-Téléchargement du paquet \verb,.deb, et de sa signature.
-\begin{lstlisting}[language=bash]
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-amd64.deb.sha512
-\end{lstlisting}
-Il faut contrôler la signature SHA du paquet téléchargé, en la comparant avec la somme de contrôle publique.
-\begin{lstlisting}[language=bash]
-shasum -a 512 -c elasticsearch-7.6.2-amd64.deb.sha512
-\end{lstlisting}
-La réponse doit être \verb,elasticsearch-7.6.2-amd64.deb: OK,, avec le bon numéro de version.
-Il suffit enfin d'installer le paquet précédemment téléchargé.
-\begin{lstlisting}[language=bash]
-sudo dpkg -i elasticsearch-7.6.2-amd64.deb
-\end{lstlisting}
-Afin de tester si l'installation est réussie, il faut lancer Elasticsearch
-\begin{lstlisting}[language=bash]
-sudo service elasticsearch start
-\end{lstlisting}
-Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement d'Elasticsearch est contrôlable à l'adresse \verb,localhost:9200,. Ou alors avec la commande \verb,curl, suivante :
-\begin{lstlisting}[language=bash]
-curl -X GET "localhost:9200/?pretty"
-\end{lstlisting}
+Le système Elastic Stack devra mesurer plusieurs métriques :
+\begin{itemize}
+    \item Redémarrage de conteneur.
+    \item Taux d'utilisation de la mémoire.
+    \item Occupation de la base de données (PostgreSQL).
+    \item Taux d'utilisation du CPU.
+    \item Les crashs Java
+    \item Et éventuellement d'autres métriques comme les logs de l'application Java.
+\end{itemize}
 
-La figure \ref{f-elasticsearchInstalled} montre une installation complète et réussie.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=9cm]{img/screenshots/elasticsearch_installed.png}
-    \caption{Page d'accueil Elasticsearch}
-    \label{f-elasticsearchInstalled}
-\end{figure}
-L'application s'arrête également grâce à la commande \verb,service,.
-\begin{lstlisting}[language=bash]
-sudo service elasticsearch stop
-\end{lstlisting}
+Plusieurs instances peuvent être lancées en même temps, ce qui permet de simuler au mieux la réalité (il y a plusieurs \og field device \fg).
 
-\subsubsection{Kibana}
-Téléchargement du paquet \verb,.deb, et de sa signature.
-\begin{lstlisting}[language=bash]
-wget https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-amd64.deb
-wget https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-amd64.deb.sha512
-\end{lstlisting}
-Il faut contrôler la signature SHA du paquet téléchargé, en la comparant avec la somme de contrôle publique.
-\begin{lstlisting}[language=bash]
-shasum -a 512 -c kibana-7.6.2-amd64.deb.sha512
-\end{lstlisting}
-La réponse doit être \verb,kibana-7.6.2-amd64.deb: OK,, avec le bon numéro de version.
-Il suffit enfin d'installer le paquet précédemment téléchargé.
-\begin{lstlisting}[language=bash]
-sudo dpkg -i kibana-7.6.2-amd64.deb
-\end{lstlisting}
-Afin de tester si l'installation est réussie, il faut lancer Kibana
-\begin{lstlisting}[language=bash]
-sudo  service kibana start
-\end{lstlisting}
-Une fois la commande exécutée, à l'aide d'un navigateur, le bon fonctionnement de Kibana est contrôlable à l'adresse \verb,localhost:5601,.
+Il doit être possible de savoir si le système est fonctionnel, et à quel point.
 
-La figure \ref{f-kibanaInstalled} montre une installation complète et réussie.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=11cm]{img/screenshots/kibana_installed.png}
-    \caption{Page d'accueil Kibana}
-    \label{f-kibanaInstalled}
-\end{figure}
-L'application s'arrête également grâce à la commande \verb,service,.
-\begin{lstlisting}[language=bash]
-sudo service kibana stop
-\end{lstlisting}
-
-\subsubsection{Logstash}
-Logstash nécessite la présence de Java sur son système. L'installation décrite ci-dessous fonctionne avec une version de Java open-source : \verb,OpenJDK,. Il est bien sûr possible d'utiliser la version Java officielle d'Oracle.
-
-Il faut donc contrôler si Java est bien présent sur la machine.
-\begin{lstlisting}[language=bash]
-java -version
-\end{lstlisting}
-Sur un système avec Java installé, la réponse est de la forme suivante :
-\begin{lstlisting}[language=bash]
-openjdk version "11.0.7" 2020-04-14
-OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-3ubuntu1)
-OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-3ubuntu1, mixed mode, sharing)
-\end{lstlisting}
-
-Tout d'abord, il faut télécharger et installer la clé PGP d'Elastic permettant de télécharger le paquet avec \verb,APT,.
-\begin{lstlisting}[language=bash]
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-\end{lstlisting}
-Il faut ensuite télécharger, si ce n'est pas déjà le cas sur la machine, installer le paquet \verb,apt-transport-https,.
-\begin{lstlisting}[language=bash]
-sudo apt-get install apt-transport-https
-\end{lstlisting}
-Il faut ensuite sauvegarder la définition du répertoire à \verb,/etc/apt/sources.list.d/elastic-7.x.list,.
-\begin{lstlisting}[language=bash]
-echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
-\end{lstlisting}
-Enfin, il faut télécharget et installer Logstash.
-\begin{lstlisting}[language=bash]
-sudo apt-get update && sudo apt-get install logstash
-\end{lstlisting}
-Il est possible de tester si Logstash a été correctement installé en le lançant. Cependant, il ne sera passera rien, car il n'est pas configuré. Toutefois, si le système ne renvoie pas d'erreur, c'est que Logstash a été correctement installé, en principe.
-\begin{lstlisting}[language=bash]
-sudo systemctl start logstash.service
-\end{lstlisting}
-Logstash s'arrête avec une commande similaire.
-\begin{lstlisting}[language=bash]
-sudo systemctl stop logstash.service
-\end{lstlisting}
-
-La partie \og serveur \fg est de la Suite Elastic est maintenant installée. Il reste encore à installer un agent Beat sur la machine générant les logs.
-
-\subsubsection{Beat}
-Il existe toute une panoplie d'agent de transfert léger dans la famille Beat. La liste des agents Beat existants est disponible sur le site d'Elastic. Il existe des Beat créés par Elastic, et également un grand nombre de Beat communautaires, créés, comme leur nom l'indique, par la communauté (p. ex. dockbeat pour Docker, Kafkabeat pour Kafka, etc.).
-Comme le programme de simulation de l'infrastructure GridEye utilisé pour l'implémentation du cas d'utilisation stocke les logs générés dans un fichier, le descriptif d'installation de ce document se concentrera sur l'installation d'un agent de type \verb,Filebeat,.
-
-Sur la machine générant les logs, il faut donc télécharger le paquet de \verb,Filebeat,.
-\begin{lstlisting}[language=bash]
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-amd64.deb
-\end{lstlisting}
-Finalement, il faut installer le paquet téléchargé.
-\begin{lstlisting}[language=bash]
-sudo dpkg -i filebeat-7.6.2-amd64.deb
-\end{lstlisting}
-
-Comme pour Logstash, il est possible de tester si Filebeat a été correctement installé en le lançant. Cependant, il ne sera passera rien, car il n'est pas configuré. Toutefois, si le système ne renvoie pas d'erreur, c'est que Filebeat a été correctement installé, en principe.
-\begin{lstlisting}[language=bash]
-sudo service filebeat start
-\end{lstlisting}
-Filebeat s'arrête avec une commande similaire.
-\begin{lstlisting}[language=bash]
-sudo service filebeat stop
-\end{lstlisting}
-
-\subsection{Configuration de la Suite Elastic}
-Il est nécessaire de configurer les logiciels Logstash et Filebeat, afin que leurs entrées et sorties regardent les bonnes adresses. Pour Logstash, il faudra également configurer les éventuels filtres utilisés pour parser le contenu des logs.
-
-\subsubsection{Logstash} \label{configureLogstash}
-La configuration de Logstash se fait dans un fichier \verb,.conf, situé dans le répertoire \verb,/etc/logstash/conf.d/,, pour les installations Linux. Le fichier peut avoir n'importe quel nom, tant qu'il porte l'extension \verb,.conf,.
-
-Le fichier de configuration de Logstash est divisé en trois parties :
-\begin{enumerate}
-    \item input
-    \subitem Cette première partie permet de configurer l'arrivée des logs. Il est possible d'y configurer un agent Beat, ce qui nous concernera ici, mais également la lecture directe d'un fichier, ou de beaucoup d'autres sources, comme Twitter, JDBC, etc.
-    \item filter
-    \subitem La partie filtre permet quant à elle de parser les logs. Il existe là aussi beaucoup de filtres différents. Nous utiliserons une structure \verb,grok, qui permet de parser des événements non structurés.
-    \item output
-    \subitem La sortie sert à choisir où Logstash enverra ses logs traités. En général, il s'agit d'Elasticsearch.
-\end{enumerate}
-
-Pour la configuration de l'entrée, nous allons simplement écouter un agent Beat sur un port donné, le 5044.
-\begin{lstlisting}[language=bash]
-input {
-    beats {
-        port => 5044
-    }
-}
-\end{lstlisting}
-En ce qui concerne le filtre, nous allons parser les logs envoyés par le logiciel de simulation de GridEye. Le format des logs est défini par la ligne suivante :
-\begin{lstlisting}
-%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{100} -> %msg%n
-\end{lstlisting}
-Le site \verb,grokconstructor, \cite{noauthor_test_nodate} permet de créer des \verb,grok pattern, de façon incrémentale. Il suffit de lui donner quelques lignes de logs générés par notre application et de le configurer. Il va ensuite nous proposer des motifs qu'il détecte dans les lignes de logs données. Voici le résultats après lui avoir donné quelques lignes générés par le simulateur :
-\begin{lstlisting}
-\A%{TIMESTAMP_ISO8601}%{SPACE}%{LOGLEVEL}%{SPACE}%{JAVACLASS} -> %{JAVALOGMESSAGE}
-\end{lstlisting}
-À savoir que le tout premier champ, qui a été défini comme un \verb,TIMESTAMP_ISO8601,, n'en est pas vraiment un \cite{noauthor_iso_2020}. Mais c'est le motif qui correspond le mieux à notre format de date-heure.
-Il reste à définir des labels décrivant les différents motifs. Ces labels seront utilisés par Kibana.
-\begin{lstlisting}
-\A%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:message}
-\end{lstlisting}
-Etant donné que ce \verb,grok pattern, suffit pour parser nos logs, il n'y aura rien d'autre dans la section filtre de la configuration.
-\begin{lstlisting}[language=bash]
-filter { 
-    grok { 
-        match => {"message" => "%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:log_message}"}
-    }
-}
-\end{lstlisting}
-Pour finir, la partie sortie défini uniquement l'adresse et le port de notre instance Elasticsearch.
-\begin{lstlisting}[language=bash]
-output {
-    elasticsearch {
-        hosts => ["localhost:9200"]
-    }
-}
-\end{lstlisting}
-Le fichier complet \verb,logstash.conf, est disponible dans l'annexe \ref{appendix:logstashConf}.
-
-\subsubsection{Filebeat}
-La configuration de Filebeat se fait également dans un fichier \verb,YAML,, qui se nomme \verb,filebeat.yml,, et qui se situe dans le répertoire \verb,/etc/filebeat/,. De base, le fichier contient un exemple de fichier de configuration. Il y a un grand nombre de paramètres de configuration disponibles. Dans le cas de notre utilisation, il n'y a que deux paramètres à configurer : l'entrée à lire ainsi que la sortie.
-Pour l'entrée, il suffit de faire pointer le paramètre vers le fichier dans lequel le simulateur GridEye écrit ses logs.
-\begin{lstlisting}[language=bash]
-filebeat.inputs:
-- type: log
-  enabled: true
-  paths:
-    - <REPOSITORY>/GridEye_Simulator.log
-\end{lstlisting}
-Il faut remplacer \verb,<REPOSITORY>, par la localisation du répertoire contenant le fichier de log.
-Pour la sortie, on va informer l'adresse de l'instance de Logstash configuré plus tôt.
-\begin{lstlisting}[language=bash]
-output.logstash:
-  hosts: ["<IP>:5044"]
-\end{lstlisting}
-Il faut remplacer \verb,<IP>, par l'adresse IP de la machine hébergeant Logstash.
-Le fichier complet \verb,filebeat.yml, est disponible dans l'annexe \ref{appendix:filebeatConf}.
-
-\subsection{Lancement et test de la Suite Elastic} \label{ss-lancementTestsElastic}
-Maintenant que toutes les applications de la Suite Elastic sont installées et configurées, il ne reste plus qu'à tester le tout. Pour ce faire, sur la machine côté serveur, il faut lancer Elasticsearch, Kibana et Logstash.
-\begin{lstlisting}[language=bash]
-sudo service elasticsearch start
-sudo service kibana start
-sudo systemctl start logstash.service
-\end{lstlisting}
-
-Sur la machine côté client, les applications à lancer sont le simulateur GridEye, puis Filebeat. Pour le lancement du simulateur, il faut se situer dans le répertoire contenant le fichier \verb,pom.xml,.
-\begin{lstlisting}
-mvn clean verify && java -Xmx10g -jar target/grideye-service-log-generator-1.0.0-SNAPSHOT.jar
-sudo service filebeat start
-\end{lstlisting}
-
-À partir de là, les logs vont commencer à arriver dans Elasticsearch. Afin de les visualiser dans Kibana, il est nécessaire de créer un \verb,Index Pattern,. Cet outil est disponible dans \verb,Management, $\rightarrow$ \verb,Kibana, $\rightarrow$ \verb,Index Patterns, $\rightarrow$ \verb,Create index pattern,. Le nom du motif doit commencer par les mêmes lettres que l'index stocké dans Elasticsearch. Dans notre cas, on peut donc l'appeler simplement \verb,logstash,.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=11cm]{img/screenshots/kib_create_index_pattern.png}
-    \caption{Création de l'index pattern dans Kibana}
-    \label{f-kibCreateIndexPattern}
-\end{figure}
-Une fois créé, on peut voir les logs dans l'onglet \verb,Discover, de Kibana. Il est également possible d'afficher uniquement les champs qui nous intéressent, comme ceux créés dans le filtre.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=18cm]{img/screenshots/kib_logs_arrived.png}
-    \caption{Affichage des logs parsés dans Kibana}
-    \label{f-kibLogsArrived}
-\end{figure}
+Pour répondre à toutes ces demandes, on va commencer par installer et configurer tous les outils de la Suite Elastic qui seront utilisés, et ce avec Docker.
+Ensuite, nous allons créer des visualisations avec Kibana. Elles permettront de connaître l'état du système en temps réel, et de retrouver la cause des problèmes, s'il y en a.
 
 \subsection{La Suite Elastic avec Docker}
-Afin de faciliter les étapes d'installation, de configuration et de lancement de la Suite Elastic, une version \og dockerisée \fg des différents logiciels est une solution idéale. Elle permet également d'uniformiser ces étapes-ci. En effet, l'installation des applications de la Suite Elastic telle que décrit à la section \ref{installationElasticStack} fonctionnera sur un système Ubuntu, voire Linux, mais pas sur un système d'exploitation Microsoft Windows par exemple. L'utilisation de conteneurs comble ces problèmes.
+Afin de faciliter les étapes d'installation, de configuration et de lancement de la Suite Elastic, une version \og dockerisée \fg des différents logiciels est une solution idéale. Elle permet également d'uniformiser ces étapes-ci. En effet, l'installation des applications de la Suite Elastic sans conteneur fonctionnera de la même manière sur des systèmes Ubuntu, voire Linux, mais sera différente sur un système d'exploitation Microsoft Windows par exemple. L'utilisation de conteneurs comble ces problèmes.
+
+L'installation à été séparée en deux, car deux machines sont nécessaires pour simuler l'interface GridEye : une machine serveur, recevant les logs, et une machine client, envoyant les logs.
 \subsubsection{Machine hôte de \og ELK \fg}
 Par \og ELK \fg, qui est l'ancien nom de la Suite Elastic, on parle des trois outils Logstash, Elasticsearch et Kibana. C'est la machine qui ne sera pas sur le terrain et qui permettra l'agrégation, le stockage et l'analyse des logs, entre autres.
 La figure \ref{f-dockerTopology} montre un schéma de la topologie Docker prévue permettant de faire fonctionner ensemble les différents outils de la Suite Elastic.
@@ -1014,13 +805,69 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 FROM docker.elastic.co/kibana/kibana:7.6.2
 \end{lstlisting}
 
-Pour l'image de Logstash, il y aura deux fichiers de configurations. Un pour le \og pipeline \fg, qui contiendra les entrées, filtres et sorties décrites à la section \ref{configureLogstash}, et un pour les paramètres de l'outil. \\
+Pour l'image de Logstash, il y aura deux fichiers de configurations. Un pour le \og pipeline \fg, qui contiendra les configurations d'entrées, filtres et sorties, et un pour les paramètres de l'outil. \\
 Fichier de configuration des paramètres (\verb,logstash.yml,) :
 \begin{lstlisting}
 http.host: "0.0.0.0"
 xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
 \end{lstlisting}
-Le fichier de configuration du pipeline est donc le même que pour l'installation sans Docker. Il est disponible à l'annexe \ref{appendix:logstashConf}.
+La configuration du pipeline se fait dans un fichier \verb,.conf, nommé \verb,logstash.conf, et qui ira se copier à l'adresse \verb,/usr/share/logstash/pipeline/, du système de fichier du conteneur. Le fichier peut avoir un nom différent, tant qu'il porte l'extension \verb,.conf,.
+
+Le fichier de configuration de Logstash est divisé en trois parties :
+\begin{enumerate}
+    \item input
+    \subitem Cette première partie permet de configurer l'arrivée des logs. Il est possible d'y configurer un agent Beat, ce qui nous concernera ici, mais également la lecture directe d'un fichier, ou de beaucoup d'autres sources, comme Twitter, JDBC, etc.
+    \item filter
+    \subitem La partie filtre permet quant à elle de parser les logs. Il existe là aussi beaucoup de filtres différents. Nous utiliserons une structure \verb,grok, qui permet de parser des événements non structurés.
+    \item output
+    \subitem La sortie sert à choisir où Logstash enverra ses logs traités. En général, il s'agit d'Elasticsearch.
+\end{enumerate}
+
+Pour la configuration de l'entrée, nous allons simplement écouter deux agents Beat, chacun sur un port donné. Nous allons également ajouté un tag \verb,filebeat, qui sera utilisé pour la partie \og filtre \fg.
+\begin{lstlisting}[language=bash]
+input {
+    beats {
+        port => 5044
+        tags => ["filebeat"]
+    }
+
+    beats {
+        port => 5045
+    }
+}
+\end{lstlisting}
+En ce qui concerne le filtre, nous allons parser les logs envoyés par le logiciel de simulation de GridEye. Le format des logs est défini par la ligne suivante :
+\begin{lstlisting}
+%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{100} -> %msg%n
+\end{lstlisting}
+Le site \verb,grokconstructor, \cite{noauthor_test_nodate} permet de créer des \verb,grok pattern, de façon incrémentale. Il suffit de lui donner quelques lignes de logs générés par notre application et de le configurer. Il va ensuite nous proposer des motifs qu'il détecte dans les lignes de logs données. Voici le résultats après lui avoir donné quelques lignes générés par le simulateur :
+\begin{lstlisting}
+\A%{TIMESTAMP_ISO8601}%{SPACE}%{LOGLEVEL}%{SPACE}%{JAVACLASS} -> %{JAVALOGMESSAGE}
+\end{lstlisting}
+À savoir que le tout premier champ, qui a été défini comme un \verb,TIMESTAMP_ISO8601,, n'en est pas vraiment un \cite{noauthor_iso_2020}. Mais c'est le motif qui correspond le mieux à notre format de date-heure.
+Il reste à définir des labels décrivant les différents motifs. Ces labels seront utilisés par Kibana.
+\begin{lstlisting}
+\A%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:message}
+\end{lstlisting}
+Comme ce \verb,grok pattern, permet de parser uniquement nos logs applicatifs, il faut ajouter une condition, qui indique que si les logs viennent d'ailleurs (p. ex. de la base de données PostgreSQL), ils ne doivent pas être parsés par ce filtre. Nous allons utiliser le tag \verb,filebeat,.
+\begin{lstlisting}[language=bash]
+filter {
+    if ("filebeat" in [tags]) {
+	grok { 
+	    match => {"message" => "%{TIMESTAMP_ISO8601:date_hour}%{SPACE}%{LOGLEVEL:log_level}%{SPACE}%{JAVACLASS:class} -> %{JAVALOGMESSAGE:log_message}"}
+	}
+}
+\end{lstlisting}
+Pour finir, la partie sortie défini uniquement l'adresse et le port de notre instance Elasticsearch.
+\begin{lstlisting}[language=bash]
+output {
+    elasticsearch {
+        hosts => ["elasticsearch:9200"]
+    }
+}
+\end{lstlisting}
+Le fichier complet \verb,logstash.conf, est disponible dans l'annexe \ref{appendix:logstashConf}.
+
 Le \verb,Dockerfile, de Logstash télécharge l'image, puis ajoute les fichiers de configuration au système de fichier du conteneur.
 \begin{lstlisting}
 FROM docker.elastic.co/logstash/logstash:7.6.2
@@ -1034,9 +881,27 @@ Pour finir, le fichier \verb,docker-compose.yml, organise toute la topologie. Il
 Un répertoire GitHub \cite{jael24_jael24tb_elasticstack_2020} contient toute l'architecture décrite.
 
 Pour lancer le déploiement de la Suite Elastic, il suffit de lancer la commande \verb,docker-compose up --build -d, à l'endroit où se situe le fichier \verb,docker-compose.yml,. Dans ce cas-ci, le dossier \verb,topology,.
-Pour tester si tout le déploiement s'est bien déroulé, les mêmes étapes que celles du paragraphe \ref{ss-lancementTestsElastic}, à partir de la partie côté \og client \fg, peuvent être appliquées.
+Pour tester si tout le déploiement s'est bien déroulé, une vérification d'Elasticsearch et de Kibana s'impose. 
 
-\subsubsection{Machine \og terrain \fg}
+Premièrement, avec un navigateur, la visite de l'adresse \verb,http://localhost:9200/_cat/indices, permet de constater le fonctionnement d'Elasticsearch et de Logstash. En effet, si tout se passe bien, on devrait voir les différents indices contenu dans la base de données, dont un s'appelant \verb,logstash...,. La figure \ref{f-elsearchIndices} montre cette configuration réussie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/elasticsearchLogstashOk.png}
+    \caption{Indices contenus dans la base de données Elasticsearch, avec Logstash}
+    \label{f-elsearchIndices}
+\end{figure}
+
+Deuxièmement, toujours dans un navigateur, à l'adresse \verb,localhost:5601,, il devrait y avoir l'application Kibana qui est lancée. La figure \ref{f-kibanaInstalled} montre ceci.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/kibana_installed.png}
+    \caption{Application Kibana lancée}
+    \label{f-kibanaInstalled}
+\end{figure}
+
+\subsubsection{Machine \og terrain \fg} \label{ss-machineTerrain}
 La machine sur le terrain contiendra les agents Beat nécessaires, ainsi que les programmes et applications générant les logs. Il y aura également une base de données contenant des données arbitraires. La figure \ref{f-dockerFieldTopology} montre l'architecture définie pour l'implémentation du use-case sur la machine \og terrain \fg.
 
 \begin{figure}[H]
@@ -1075,9 +940,33 @@ USER root
 RUN chown root:metricbeat /usr/share/metricbeat/metricbeat.yml
 \end{lstlisting}
 
+La configuration de Filebeat se fait dans un fichier \verb,YAML,, qui se nomme \verb,filebeat.yml,, et qui sera copié dans le répertoire \verb,/usr/share/filebeat/, du conteneur. Il y a un grand nombre de paramètres de configuration disponibles. Dans le cas de notre utilisation, il n'y a que deux paramètres à configurer : l'entrée à lire ainsi que la sortie.
+Pour l'entrée, il suffit de faire pointer le paramètre vers le fichier dans lequel le simulateur GridEye écrit ses logs.
+\begin{lstlisting}[language=bash]
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+            - /usr/share/filebeat/logs/GridEye_sim.log
+\end{lstlisting}
+Pour la sortie, on va informer l'adresse de l'instance de Logstash configuré plus tôt.
+\begin{lstlisting}[language=bash]
+output.logstash:
+  hosts: ["<IP>:5044"]
+\end{lstlisting}
+Il faut remplacer \verb,<IP>, par l'adresse IP de la machine hébergeant Logstash.
+
+Pour Metricbeat, la configuration est similaire. Elle se fait également dans un fichier \verb,YAML,, qui se nomme \verb,metricbeat.yml,, et qui sera copié dans le répertoire \verb,/usr/share/metricbeat/, du conteneur.
+
+Il y a deux paramètres à configurer : les modules de métriques à surveiller, ainsi que la sortie.
+
+Pour les modules de métriques, nous allons utiliser \verb,system,, qui permettra d'obtenir les informations sur la mémoire et le CPU. Le module \verb,postgresql, nous permettra lui d'obtenir les métriques de la base de données. Et pour finir, le module \verb,docker, enverra lui les métriques concernant les redémarrage de conteneur, et les crashs Java.
+
+La configuration de sortie est la même que pour filebeat, mais avec le port 5045.
+
 Les fichiers de configuration des deux agents sont disponibles aux annexes \ref{appendix:filebeatConfDockerUC} (filebeat) et \ref{appendix:metricbeatConfDockerUC} (metricbeat).
 
-L'image du simulateur de la plateforme GridEye contient elle un \verb,Dockerfile, qui va lancer une application Java depuis un fichier \verb,jar,. Cette manière de lancer une application Java dockerisée est la plus simple pour ce cas présent (le fichier compilé ne change jamais car il n'y a pas de mise à jour du programme). Il y a également un dossiers \verb,logs, qui contiendra le fichier de log et sera donc la base du Volume Docker partagé avec l'agent filebeat.
+L'image du simulateur de la plateforme GridEye contient elle un \verb,Dockerfile, qui va lancer une application Java depuis un fichier \verb,jar,. Cette manière de lancer une application Java dockerisée est la plus simple pour ce cas présent (le fichier compilé ne change jamais car il n'y a pas de mise à jour du programme). Il y a également un dossiers \verb,logs, qui contiendra le fichier de log et sera donc la base du Volume Docker partagé avec l'agent filebeat. Le code, ainsi qu'une description de l'application sont disponible dans un répertoire GitHub \cite{jael24_jael24tb_grideye_simulator_2020}.
 
 \verb,Dockerfile, du simulateur GridEye
 \begin{lstlisting}
@@ -1095,10 +984,73 @@ FROM postgres:12.1
 COPY data/world.sql /docker-entrypoint-initdb.d/10-init.sql
 \end{lstlisting}
 
-Pour ce qui est du docker-compose, disponible à l'annexe \ref{appendix:dockercomposeFieldUC}, il contient les quatre services correspondant aux quatre conteneurs Docker. Les services filebeat et grideye\_simulator partagent un Volume Docker, alors que metricbeat possède également un Volume Docker qui pointe sur le fichier \verb,docker.sock,, permettant de gérer Docker depuis un conteneur.
+Pour ce qui est du docker-compose, disponible à l'annexe \ref{appendix:dockercomposeFieldUC}, il contient les quatre services correspondant aux quatre conteneurs Docker. Les services \verb,filebeat, et \verb,grideye_simulator, partagent un Volume Docker, alors que \verb,metricbeat, possède également un Volume Docker qui pointe sur le fichier \verb,docker.sock,, permettant de gérer Docker depuis un conteneur.
 
-Afin de tester l'installation de la partie terrain, il suffit de lancer la commande \verb,docker-compose up --build -d, à l’endroit où se situe le fichier \verb,docker-compose.yml,. Dans ce cas-ci, le dossier \verb,topology,. Si tout s'est bien installé, des logs devraient arriver rapidement à l'adresse indiqué dans les fichiers de configurations, si la Suite Elastic y est bien lancée.
+Afin de tester l'installation de la partie terrain, il suffit de lancer la commande \verb,docker-compose up --build -d, à l’endroit où se situe le fichier \verb,docker-compose.yml,. Dans ce cas-ci, le dossier \verb,topology,. Si tout s'est bien installé, des logs devraient arriver rapidement à l'adresse indiqué dans les fichiers de configurations, si la Suite Elastic y est bien lancée. On y retrouvera des logs applicatifs via filebeat, ainsi que des logs contenant les métriques via metricbeat.
 
+Pour voir ces logs, on va utiliser Kibana. Il faut tout d'abord créer un \verb,Index Pattern,. Cet outil est disponible dans \verb,Management, $\rightarrow$ \verb,Kibana, $\rightarrow$ \verb,Index Patterns, $\rightarrow$ \verb,Create index pattern,. Le nom du motif doit commencer par les mêmes lettres que l'index stocké dans Elasticsearch. Dans notre cas, on peut donc l'appeler simplement \verb,logstash,. 
+À l'étape 2, il est utile de choisir un \verb,timefilter,, comme \verb,@timestamp,, pour pouvoir effectuer des recherches et des graphes avec la notion de temps.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=11cm]{img/screenshots/kib_create_index_pattern.png}
+    \caption{Création de l'index pattern dans Kibana}
+    \label{f-kibCreateIndexPattern}
+\end{figure}
+Une fois créé, on peut voir les logs dans l'onglet \verb,Discover, de Kibana. Il est également possible d'afficher uniquement les champs qui nous intéressent, comme ceux créés dans le filtre.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/kib_logs_arrived.png}
+    \caption{Affichage des logs dans Kibana}
+    \label{f-kibLogsArrived}
+\end{figure}
+
+\subsection{Visualisation avec Kibana} \label{ss-visualisationAvecKibana}
+
+Une fois tous les outils installés, il ne reste plus qu'à créer des visualisations permettant de suivre l'état du système en temps réel, ou encore de retrouver l'origine d'un problème sur le système.
+
+Pour ce faire, nous allons créer plusieurs visualisations, elles-même contenues dans des tableaux de bord.
+
+Un premier tableau de bord montrera tous les problèmes de l'infrastructure. Ainsi, un opérateur pourra voir immédiatement s'il y a eu un problème dernièrement, ou au contraire si le tableau est vide.
+
+Pour ce cas d'utilisation, il y aura ensuite un autre tableau de bord mettant en relation les taux d'utilisations CPU de chaque conteneur docker. Il permettra, au cas où l'opérateur remarque une surcharge CPU sur le tableau de bord des problèmes, de déterminer quelle application pose problème.
+
+\subsubsection{Tableau de bord des problèmes} \label{sss-tableauDeBordDesProblemes}
+
+Pour ce tableau de bord, nous avons inséré quatre informations susceptible d'être considéré comme des \og problèmes \fg :
+\begin{itemize}
+    \item Les logs de crash du simulateur GridEye
+    \item Les redémarrages de conteneur Docker
+    \item Les sur-exploitation du processeur
+    \item Les sur-exploitation de la mémoire
+\end{itemize}
+
+La figure \ref{f-dashboardOfProblems} montre ce tableau de bord. Les trois premières visualisations, concernant les crashs du simulateur ainsi que les sur-exploitations sont de simples recherches dans les logs. Pour les crashs, on affiche tous les logs ayant le champ \verb,class, indiquant le service de crash. Pour le CPU, tous les logs de pourcentage d'utilisation CPU avec une valeur plus grande que 3 (les pourcentages des 4 coeurs sont additionnés). Et pour l'utilisation de la mémoire, une valeur plus grande que 0.8. Pour la dernière visualisation, on a un tableau affichant le nombre de logs contenant l'information de Docker \verb,container status, à \verb,Up 2 minutes,.
+
+Sur la capture d'écran de la figure \ref{f-dashboardOfProblems}, on peut voir un crash du simulateur, plusieurs logs de CPU sur-exploité, aucun pour la mémoire, et quelques redémarrage de conteneur. Pour les redémarrage conteneur, les premiers histogrammes correspondent au premier lancement de l'application, donc les redémarrages qui doivent être interprétés comme des erreurs sont seulement les suivants.
+
+À la vue de ce tableau de bord, on peut donc rapidement conclure que dans l'heure qui précède, on a eu un crash, des problèmes de CPU et un redémarrage de conteneur.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/dashboardOfProblems.png}
+    \caption{Tableau de bord des problèmes - Kibana}
+    \label{f-dashboardOfProblems}
+\end{figure}
+
+\subsubsection{Tableau de bord du CPU} \label{sss-tableauDeBordDuCPU}
+
+Après avoir constaté ces différents problèmes, on pourrait imaginer que l'opérateur veuille s'attaquer à la surcharge du processeur, et voudrait en savoir un peu plus sur l'origine de cette anomalie. Un tableau de bord contenant les informations détaillées des consommations de CPU a donc été créé.
+
+La figure \ref{f-dashboardOfCPU} montre ce tableau de bord.
+
+Les valeurs d'utilisation du CPU sont les mêmes que dans le tableau des problèmes : les pourcentages des 4 coeurs sont additionnés. Elles varient donc de 0 à 4. Dans cette capture d'écran, on remarque que le problème vient du simulateur GridEye, car il utilise périodiquement les pleines capacités du CPU, alors que les trois autres conteneurs ne dépassent pas les 3\% sur la globalité des 4 coeurs. L'opérateur pourra encore pousser ces recherches en regardant les logs de GridEye aux heures où il consomme tout le processeur.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=18cm]{img/screenshots/dashboardOfCPU.png}
+    \caption{Tableau de bord du CPU - Kibana}
+    \label{f-dashboardOfCPU}
+\end{figure}
 
 \newpage
 
@@ -1110,6 +1062,8 @@ Afin de tester l'installation de la partie terrain, il suffit de lancer la comma
 \newpage
 
 \appendix
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+
 \justify
 
 \listoftables
