@@ -1,22 +1,21 @@
 metricbeat.modules:
 - module: system
   metricsets: ["cpu","memory"]
-  enabled: false
+  enabled: true
   period: 10s
   processes: ['.*']
 
-  cpu.metrics:  ["percentages","normalized_percentages"]
+  cpu.metrics:  ["percentages"]
   core.metrics: ["percentages"]
 
 - module: postgresql
-  enabled: false
+  enabled: true
   period: 10s
   metricsets: ["database"]
   hosts: ["postgres://postgres:5432?sslmode=disable"]
   username: postgres
   password: postgres
 
-metricbeat.modules:
 - module: docker
   metricsets:
     - "container"
